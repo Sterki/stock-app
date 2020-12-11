@@ -1,0 +1,62 @@
+.login {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100vh;
+  flex-direction: row;
+}
+.login__containerImg {
+  display: flex;
+  flex-direction: column;
+}
+.login__containerImg > img {
+  height: 25rem;
+  object-fit: contain;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .login {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+  }
+  .login__containerImg {
+    display: none;
+  }
+  .login__containerImg > img {
+    display: none;
+  }
+}
+.login__container {
+  display: flex;
+  flex-direction: column;
+  min-width: 20rem;
+  max-width: 25rem;
+}
+.login__container > h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #534bc4;
+  text-transform: uppercase;
+}
+.login__inputs > .MuiTextField-root {
+  width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.login__inputs > button {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  background-color: #665df5;
+  color: white;
+  text-transform: uppercase;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.login__inputs > button:hover {
+  background-color: #534bc4;
+}

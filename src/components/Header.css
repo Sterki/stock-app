@@ -1,0 +1,30 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem;
+  align-items: center;
+  /* border-bottom: 1px solid lightgray; */
+  background-color: var(--azul);
+}
+.header__logoutavatar > .MuiAvatar-root {
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+.header__logoutavatar > .MuiAvatar-root:hover {
+  border: 2px solid white;
+}
+.header__toggledrawwer {
+  min-width: 17rem;
+}
+.header__title {
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+.header__title > h1 {
+  color: var(--azul);
+  text-transform: uppercase;
+}
+.header__username {
+  color: white;
+}

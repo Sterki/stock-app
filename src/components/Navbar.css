@@ -1,0 +1,27 @@
+.navbar {
+  display: flex;
+  flex-direction: column;
+}
+.navbar__links {
+  padding: 1rem;
+  text-decoration: none;
+  color: var(--negro);
+  text-transform: uppercase;
+  transition: all 0.2s;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  display: flex;
+  align-items: center;
+}
+.navbar__links:hover {
+  background-color: var(--azul);
+  border-top: 1px solid white;
+  color: white;
+}
+.navbar__links > .MuiSvgIcon-root {
+  margin-right: 1rem;
+}
+.active {
+  background-color: var(--azul);
+  color: white;
+}
