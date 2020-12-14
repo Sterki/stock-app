@@ -41,7 +41,7 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email.trim() === "" || password.trim === "") {
-      return setError("All the fields are required!, try Again");
+      return setError("Todos los campos son Obligatorios");
     }
     auth
       .signInWithEmailAndPassword(email, password)
@@ -64,7 +64,7 @@ function Login() {
       </div>
       <form onSubmit={handleSubmit}>
         <div className="login__container">
-          <h1>Sign in</h1>
+          <h1>Login</h1>
           {error ? <Alert severity="error">{error}</Alert> : null}
 
           <div className="login__inputs">
@@ -80,7 +80,7 @@ function Login() {
           <div className="login__inputs">
             <TextField
               id="outlined-basic"
-              label="Password"
+              label="Contraseña"
               name="password"
               type="password"
               variant="outlined"
@@ -89,14 +89,14 @@ function Login() {
             />
           </div>
           <div className="login__inputs">
-            <button>Sign In</button>
-            <Link to="/register">Create an Acccount</Link>
+            <button>Ingresar</button>
+            <Link to="/register">Crear una cuenta</Link>
           </div>
         </div>
       </form>
       <Backdrop className={classes.backdrop} open={open} onClick={handleClose}>
         <CircularProgress color="inherit" />{" "}
-        <span>Redirecting to the main Page</span>
+        <span>Redireccionando hacia la pagina principal</span>
       </Backdrop>
     </div>
   );

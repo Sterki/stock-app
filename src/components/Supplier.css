@@ -1,0 +1,49 @@
+.MuiTableCell-root > .MuiSvgIcon-root {
+  color: rgb(199, 5, 5);
+  cursor: pointer;
+}
+.supplier__buttondisagree {
+  padding: 0.4rem;
+  border: 1px solid var(--negro);
+  border-radius: 5px;
+  background-color: white;
+  color: var(--negro);
+  width: 8rem;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.supplier__buttondisagree:hover {
+  color: white;
+  border: 1px solid transparent;
+  background-color: var(--negro);
+}
+.supplier__buttonagree {
+  padding: 0.4rem;
+  border: 1px solid var(--azul);
+  border-radius: 5px;
+  background-color: white;
+  color: var(--azul);
+  width: 8rem;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.supplier__buttonagree:hover {
+  color: white;
+  background-color: var(--azul);
+  border: 1px solid transparent;
+}
+.MuiDialogContent-root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.MuiDialogContent-root > .MuiSvgIcon-root {
+  color: #ffc107;
+  height: 4rem;
+  width: 4rem;
+}
+.MuiTableRow-root:nth-of-type(odd) {
+  background-color: #f3f2f8;
+}

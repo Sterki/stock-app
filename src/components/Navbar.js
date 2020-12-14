@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./Navbar.css";
 import BusinessIcon from "@material-ui/icons/Business";
 import AssignmentIcon from "@material-ui/icons/Assignment";
@@ -17,7 +17,7 @@ function Navbar() {
         className="navbar__links"
       >
         <BusinessIcon />
-        Suppliers
+        Proveedores
       </NavLink>
       <NavLink
         to="/customers"
@@ -25,11 +25,11 @@ function Navbar() {
         className="navbar__links"
       >
         <AssignmentIcon />
-        Customers
+        Clientes
       </NavLink>
       <NavLink to="/panel" activeClassName="active" className="navbar__links">
         <LocalMallIcon />
-        Products
+        Stock
       </NavLink>
       <NavLink
         to="/myprofile"
@@ -37,7 +37,7 @@ function Navbar() {
         className="navbar__links"
       >
         <AccountBoxIcon />
-        My Profile
+        Mi Perfil
       </NavLink>
       <NavLink
         to="/administrator"
@@ -45,7 +45,7 @@ function Navbar() {
         className="navbar__links"
       >
         <SupervisorAccountIcon />
-        User Administrator
+        Administrar Usuarios
       </NavLink>
     </nav>
   );

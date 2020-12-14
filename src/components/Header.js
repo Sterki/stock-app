@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Header.css";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
@@ -53,6 +53,32 @@ function Header() {
     dispatch(closeSesionAction());
     history.push("/");
   };
+  const [thetime, setThetime] = useState({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  const { hours, minutes, seconds } = thetime;
+  useEffect(() => {
+    function clock() {
+      let hour = document.getElementById("hours");
+      let min = document.getElementById("minutes");
+      let sec = document.getElementById("seconds");
+
+      let h = new Date().getHours();
+      let m = new Date().getMinutes();
+      let s = new Date().getSeconds();
+
+      setThetime({
+        hours: h,
+        minutes: m,
+        seconds: s,
+      });
+    }
+    setInterval(clock, 1000);
+  }, []);
+
   return (
     <div className="header">
       <div className="header__menuicon">
@@ -87,11 +113,25 @@ function Header() {
       </div>
       <div className="header__username">
         <span>
-          Wellcome <strong>{user?.email}</strong>
+          Bienvenido <strong>{user?.email}</strong>
         </span>
       </div>
+      <div className="header__time">
+        <div className="header__clock">
+          <span id="hours">{hours}</span>
+          <p>Horas</p>
+        </div>
+        <div className="header__clock">
+          <span id="minutes">{minutes}</span>
+          <p>Minutos</p>
+        </div>
+        <div className="header__clock">
+          <span id="seconds">{seconds}</span>
+          <p>Segundos</p>
+        </div>
+      </div>
       <div className="header__logoutavatar">
-        <Tooltip title="Close Sesion" TransitionComponent={Zoom}>
+        <Tooltip title="Cerrar Sesión" TransitionComponent={Zoom}>
           <Avatar
             alt={user?.email.toUpperCase()}
             src="/static/images/avatar/1.jpg"

@@ -5,6 +5,9 @@
   align-items: center;
   /* border-bottom: 1px solid lightgray; */
   background-color: var(--azul);
+  position: sticky;
+  top: 0%;
+  z-index: 999;
 }
 .header__logoutavatar > .MuiAvatar-root {
   cursor: pointer;
@@ -27,4 +30,18 @@
 }
 .header__username {
   color: white;
+}
+.header__time {
+  display: flex;
+  align-items: center;
+  -webkit-box-reflect: below 1px;
+  -moz-box-reflect: below 1px;
+}
+.header__clock {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem 0.5rem 1rem;
 }
