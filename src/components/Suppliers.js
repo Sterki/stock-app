@@ -65,6 +65,9 @@ const useStyles = makeStyles((theme) => ({
 function Suppliers() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [agregarClientes, setAgregarClientes] = useState(
+    "Agregar Proveedores +"
+  );
   const [error, setError] = useState("");
   const userAuth = useSelector((state) => state.users.user);
   const [suppliers, setSuppliers] = useState([]);
@@ -87,9 +90,8 @@ function Suppliers() {
     setPage(0);
   };
 
-  let isRendered = useRef(false);
   useEffect(() => {
-    isRendered = true;
+    let isRendered = true;
     db.collection("suppliers")
       .orderBy("created", "desc")
       .onSnapshot((snapshot) => {
@@ -156,9 +158,31 @@ function Suppliers() {
 
     setOpen(false);
   };
+
+  function showAndHideDiv() {
+    let div = document.getElementById("myDiv");
+    let boton = document.getElementById("botonagregar");
+
+    if (div.style.display === "flex") {
+      div.style.display = "none";
+      // boton.classList.add("buttonagregarmas");
+      setAgregarClientes("Agregar Proveedores +");
+      // boton.classList.remove("buttonagregarmenos");
+    } else {
+      div.style.display = "flex";
+      // boton.classList.add("buttonagregarmenos");
+      setAgregarClientes("Ocultar Agregar Proveedores -");
+      // boton.classList.remove("buttonagregarmas");
+    }
+  }
   return (
     <div className="suppliers">
-      <div className="suppliers__container">
+      <div className="suppliers__buttonagregar">
+        <button onClick={showAndHideDiv} id="botonagregar">
+          {agregarClientes}
+        </button>
+      </div>
+      <div className="suppliers__container" id="myDiv">
         <div className="suppliers__title">
           <h3>Ingresar Proveedores</h3>
           <div className="suppliers__error">

@@ -50,7 +50,7 @@ function Login() {
         setOpen(true);
         setTimeout(() => {
           setOpen(false);
-          history.push("/panel");
+          history.push("/suppliers");
         }, 1500);
       })
       .catch((error) => {

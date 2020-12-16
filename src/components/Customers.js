@@ -1,5 +1,5 @@
-import { Snackbar, TextField } from "@material-ui/core";
-import React, { useState } from "react";
+import { makeStyles, Snackbar, TextField } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import "./Customers.css";
 import "./Suppliers.css";
 import db from "./../firebase";
@@ -7,13 +7,77 @@ import MuiAlert from "@material-ui/lab/Alert";
 import { SettingsPowerRounded } from "@material-ui/icons";
 import firebase from "firebase";
 import { useSelector } from "react-redux";
+import Customer from "./Customer";
+
+//imports para las tablas
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
+const columns = [
+  { id: "rut", label: "Rut", minWidth: 100 },
+  {
+    id: "nombreproveedor",
+    label: "Nombre Cliente",
+    minWidth: 120,
+  },
+  {
+    id: "direccion",
+    label: "Dirección",
+    minWidth: 170,
+    align: "left",
+  },
+  {
+    id: "city",
+    label: "Ciudad",
+    minWidth: 150,
+    align: "left",
+  },
+  {
+    id: "email",
+    label: "Email",
+    minWidth: 170,
+    align: "left",
+  },
+  {
+    id: "phone",
+    label: "Teléfono",
+    minWidth: 170,
+    align: "left",
+  },
+  {
+    id: "delete",
+    label: "#",
+    minWidth: 50,
+    align: "left",
+  },
+];
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2),
+    },
+    container: {
+      maxHeight: 440,
+    },
+  },
+}));
 function Customers() {
+  const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [agregarClientes, setAgregarClientes] = useState("Agregar Clientes +");
   const userAuth = useSelector((state) => state.users.user);
+  const [customers, setCustomers] = useState([]);
   const [customer, setCustomer] = useState({
     namecustomer: "",
     rutcustomer: "",
@@ -37,10 +101,32 @@ function Customers() {
     email,
   } = customer;
 
+  //useEffect para obtener los datos de los clientes
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+  console.log(customers);
+  useEffect(() => {
+    db.collection("customers")
+      .orderBy("created", "desc")
+      .onSnapshot((snapshot) => {
+        setCustomers(
+          snapshot.docs.map((doc) => ({ id: doc.id, datainfo: doc.data() }))
+        );
+      });
+  }, []);
+
   const handleClose = () => {
     setOpen(false);
   };
-
   const handleChange = (e) => {
     setCustomer({
       ...customer,
@@ -112,9 +198,30 @@ function Customers() {
         });
     }
   };
+  function showAndHideDiv() {
+    let div = document.getElementById("myDiv");
+    let boton = document.getElementById("botonagregar");
+
+    if (div.style.display === "flex") {
+      div.style.display = "none";
+      // boton.classList.add("buttonagregarmas");
+      setAgregarClientes("Agregar Clientes +");
+      // boton.classList.remove("buttonagregarmenos");
+    } else {
+      div.style.display = "flex";
+      // boton.classList.add("buttonagregarmenos");
+      setAgregarClientes("Ocultar Agregar Clientes -");
+      // boton.classList.remove("buttonagregarmas");
+    }
+  }
   return (
     <div className="customers">
-      <div className="suppliers__container">
+      <div className="suppliers__buttonagregar">
+        <button onClick={showAndHideDiv} id="botonagregar">
+          {agregarClientes}
+        </button>
+      </div>
+      <div className="suppliers__container" id="myDiv">
         <div className="suppliers__title">
           <h3>Ingresar CLientes</h3>
         </div>
@@ -172,7 +279,7 @@ function Customers() {
             <div className="suppliers__input4">
               <TextField
                 id="outlined-basic"
-                label="Teléfono"
+                label="Teléfono (opcional)"
                 variant="outlined"
                 name="phone"
                 value={phone}
@@ -180,7 +287,7 @@ function Customers() {
               />
               <TextField
                 id="outlined-basic"
-                label="Celular"
+                label="Celular (opcional)"
                 variant="outlined"
                 name="movil"
                 value={movil}
@@ -205,6 +312,52 @@ function Customers() {
             </Alert>
           </Snackbar>
         </div>
+      </div>
+      <div className="suppliers2">
+        <Paper className={classes.root}>
+          <TableContainer className={classes.container}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {customers
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => {
+                    return (
+                      <Customer
+                        key={row.id}
+                        id={row.id}
+                        infodata={row.datainfo}
+                      />
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 50]}
+            component="div"
+            count={customers.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+            labelRowsPerPage="Filas por página"
+            backIconButtonText="Pagina anterior"
+            nextIconButtonText="Siguiente pagina"
+          />
+        </Paper>
       </div>
     </div>
   );

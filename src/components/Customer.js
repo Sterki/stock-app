@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./Supplier.css";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
@@ -11,29 +10,28 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import WarningIcon from "@material-ui/icons/Warning";
 import Swal from "sweetalert2";
-
-function Supplier({ id, infodata }) {
+function Customer({ id, infodata }) {
   const [open, setOpen] = useState(false);
-  const [proveedorEliminar, setProveedorEliminar] = useState();
+  const [clienteEliminar, setClienteEliminar] = useState();
 
   const handleClickOpen = (infodata) => {
     setOpen(true);
-    setProveedorEliminar(infodata.name);
+    setClienteEliminar(infodata.namecustomer);
   };
   const handleClose = () => {
     setOpen(false);
   };
   const handleClickDelete = (id) => {
     if (id) {
-      db.collection("suppliers")
+      db.collection("customers")
         .doc(id)
         .delete()
-        .then((result) => {
-          console.log("proveedor eliminado");
+        .then(function () {
+          console.log("cliente eliminado correctamente");
           Swal.fire({
             position: "top-end",
             icon: "success",
-            title: "Proveedor Eliminado",
+            title: "Cliente Eliminado",
             showConfirmButton: false,
             timer: 1500,
           });
@@ -46,13 +44,14 @@ function Supplier({ id, infodata }) {
   return (
     <>
       <TableRow hover role="checkbox" tabIndex={-1}>
-        <TableCell>{id}</TableCell>
-        <TableCell>{infodata.name}</TableCell>
+        <TableCell>{infodata.rutcustomer}</TableCell>
+        <TableCell>{infodata.namecustomer}</TableCell>
         <TableCell>{infodata.address}</TableCell>
         <TableCell>{infodata.city}</TableCell>
-        <TableCell>{infodata.creator}</TableCell>
+        <TableCell>{infodata.email}</TableCell>
+        <TableCell>{infodata.phone ? infodata.phone : "Sin datos"}</TableCell>
         <TableCell>
-          <Tooltip title="Eliminar Proveedor">
+          <Tooltip title="Eliminar Cliente">
             <DeleteForeverIcon onClick={(e) => handleClickOpen(infodata)} />
           </Tooltip>
         </TableCell>
@@ -66,12 +65,10 @@ function Supplier({ id, infodata }) {
         <DialogContent>
           <WarningIcon />
           {/* <DialogContentText id="alert-dialog-description">
-            Una vez eliminado no podras
-          </DialogContentText> */}
+              Una vez eliminado no podras
+            </DialogContentText> */}
         </DialogContent>
-        <DialogTitle id="alert-dialog-title">
-          {`Estas seguro que quieres eliminar ${proveedorEliminar}`}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{`Está seguro de Eliminar a ${clienteEliminar}`}</DialogTitle>
 
         <DialogActions
           style={{
@@ -95,4 +92,4 @@ function Supplier({ id, infodata }) {
   );
 }
 
-export default Supplier;
+export default Customer;
