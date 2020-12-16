@@ -12,6 +12,7 @@ import PrincipalPage from "./components/PrincipalPage";
 import Header from "./components/Header";
 import { closeSesionAction } from "./actions/usersActions";
 import Suppliers from "./components/Suppliers";
+import Customers from "./components/Customers";
 
 function wrappApp() {
   return (
@@ -58,7 +59,7 @@ function App() {
             </Route>
             <Route path="/customers">
               <Header />
-              <PrincipalPage />
+              <Customers />
             </Route>
             <Route path="/suppliers">
               <Header />

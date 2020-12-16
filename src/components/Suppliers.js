@@ -1,5 +1,5 @@
-import { TextField } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
+import { TextField } from "@material-ui/core";
 import "./Suppliers.css";
 import db from "./../firebase";
 import firebase from "firebase";
@@ -129,10 +129,10 @@ function Suppliers() {
       db.collection("suppliers")
         .doc(rutsupplier)
         .set({
-          name: namesupplier,
-          address: address,
-          city: city,
-          province: province,
+          name: namesupplier.toUpperCase(),
+          address: address.toUpperCase(),
+          city: city.toUpperCase(),
+          province: province.toUpperCase(),
           creator: userAuth.email,
           created: firebase.firestore.FieldValue.serverTimestamp(),
         })
@@ -158,68 +158,72 @@ function Suppliers() {
   };
   return (
     <div className="suppliers">
-      <form onSubmit={handleSubmit}>
-        <div className="suppliers__container">
-          <div className="suppliers__title">
-            <h3>Ingresar Proveedores</h3>
+      <div className="suppliers__container">
+        <div className="suppliers__title">
+          <h3>Ingresar Proveedores</h3>
+          <div className="suppliers__error">
             {error && <Alert severity="error">{error}</Alert>}
           </div>
-          <div className="suppliers__inputs">
-            <TextField
-              id="outlined-basic"
-              label="Nombre"
-              variant="outlined"
-              name="namesupplier"
-              value={namesupplier}
-              onChange={handleChange}
-            />
-            <TextField
-              id="outlined-basic"
-              label="Rut"
-              variant="outlined"
-              name="rutsupplier"
-              value={rutsupplier}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="suppliers__inputs2">
-            <TextField
-              id="outlined-basic"
-              label="Dirección"
-              variant="outlined"
-              name="address"
-              value={address}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="suppliers__inputs3">
-            <TextField
-              id="outlined-basic"
-              label="Ciudad"
-              variant="outlined"
-              name="city"
-              value={city}
-              onChange={handleChange}
-            />
-            <TextField
-              id="outlined-basic"
-              label="Comuna / Provincia / Region"
-              variant="outlined"
-              name="province"
-              value={province}
-              onChange={handleChange}
-            />
-          </div>
-          <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="success">
-              Proveedor guardado con éxito
-            </Alert>
-          </Snackbar>
-          <div className="suppliers__button">
-            <button type="submit">Guardar</button>
-          </div>
         </div>
-      </form>
+        <div className="supplier__inputscontainer">
+          <form onSubmit={handleSubmit}>
+            <div className="suppliers__inputs">
+              <TextField
+                id="outlined-basic"
+                label="Nombre"
+                variant="outlined"
+                name="namesupplier"
+                value={namesupplier}
+                onChange={handleChange}
+              />
+              <TextField
+                id="outlined-basic"
+                label="Rut"
+                variant="outlined"
+                name="rutsupplier"
+                value={rutsupplier}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="suppliers__inputs2">
+              <TextField
+                id="outlined-basic"
+                label="Dirección"
+                variant="outlined"
+                name="address"
+                value={address}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="suppliers__inputs3">
+              <TextField
+                id="outlined-basic"
+                label="Ciudad"
+                variant="outlined"
+                name="city"
+                value={city}
+                onChange={handleChange}
+              />
+              <TextField
+                id="outlined-basic"
+                label="Comuna / Provincia / Region"
+                variant="outlined"
+                name="province"
+                value={province}
+                onChange={handleChange}
+              />
+            </div>
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+              <Alert onClose={handleClose} severity="success">
+                Proveedor guardado con éxito
+              </Alert>
+            </Snackbar>
+            <div className="suppliers__button">
+              <button type="submit">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
       <div className="suppliers2">
         <Paper className={classes.root}>
           <TableContainer className={classes.container}>
