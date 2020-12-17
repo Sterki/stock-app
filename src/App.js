@@ -13,6 +13,7 @@ import Header from "./components/Header";
 import { closeSesionAction } from "./actions/usersActions";
 import Suppliers from "./components/Suppliers";
 import Customers from "./components/Customers";
+import Stock from "./components/Stock";
 
 function wrappApp() {
   return (
@@ -67,7 +68,7 @@ function App() {
             </Route>
             <Route path="/panel">
               <Header />
-              <PrincipalPage />
+              <Stock />
             </Route>
             <Route path="/">
               <Login />

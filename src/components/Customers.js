@@ -1,5 +1,5 @@
 import { makeStyles, Snackbar, TextField } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Customers.css";
 import "./Suppliers.css";
 import db from "./../firebase";
@@ -113,8 +113,9 @@ function Customers() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  console.log(customers);
+
   useEffect(() => {
+    let isRendering = true;
     db.collection("customers")
       .orderBy("created", "desc")
       .onSnapshot((snapshot) => {
@@ -122,6 +123,9 @@ function Customers() {
           snapshot.docs.map((doc) => ({ id: doc.id, datainfo: doc.data() }))
         );
       });
+    return () => {
+      isRendering = false;
+    };
   }, []);
 
   const handleClose = () => {
