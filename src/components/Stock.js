@@ -5,7 +5,20 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import { makeStyles } from "@material-ui/core/styles";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+
+// table import
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
+
 import db from "./../firebase";
+import Product from "./Product";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -28,25 +41,103 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const columns = [
+  { id: "proveedor", label: "Proveedor", minWidth: 170 },
+  {
+    id: "nombreproducto",
+    label: "Nombre Producto",
+    minWidth: 140,
+  },
+  {
+    id: "category",
+    label: "Categoría",
+    minWidth: 150,
+    align: "left",
+  },
+  {
+    id: "price",
+    label: "Precio Producto",
+    minWidth: 150,
+    align: "left",
+  },
+  {
+    id: "cantidadtotal",
+    label: "Total en Stock",
+    minWidth: 100,
+    align: "left",
+  },
+  {
+    id: "estadostock",
+    label: "Estado Stock ",
+    minWidth: 170,
+    align: "left",
+  },
+
+  {
+    id: "delete",
+    label: "#",
+    minWidth: 50,
+    align: "left",
+  },
+];
+
 function Stock() {
   const classes = useStyles();
   const [state, setState] = useState({
     categoria: "",
   });
-  const [proveedor, setProveedor] = useState({
-    proveedor: "",
+  const [supplier, setProveedor] = useState({});
+  const [products, setProducts] = useState([]);
+
+  const [restInfo, setRestInfo] = useState({
+    nameproducto: "",
+    cantidad: "",
+    precio: "",
+    minimo: "",
+    maximo: "",
   });
   const [proveedores, setProveedores] = useState([]);
+  const { nameproducto, cantidad, precio, minimo, maximo } = restInfo;
+  const { categoria } = state;
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
   //useEffect para obtener los proveedores de nuestra base de datos firebase
   useEffect(() => {
-    db.collection("suppliers").onSnapshot((snapshot) => {
-      setProveedores(
-        snapshot.docs.map((doc) => ({ id: doc.id, infodata: doc.data() }))
-      );
-    });
+    db.collection("suppliers")
+      .orderBy("name", "asc")
+      .onSnapshot((snapshot) => {
+        setProveedores(
+          snapshot.docs.map((doc) => ({
+            idproveedor: doc.id,
+            infodata: doc.data(),
+          }))
+        );
+      });
   }, []);
 
+  // useEffect para obtener el listado de productos de nuestra base de datos
+
+  useEffect(() => {
+    db.collection("stock")
+      // .orderBy("created", "desc")
+      .onSnapshot((snapshot) => {
+        setProducts(
+          snapshot.docs.map((doc) => ({
+            idproduct: doc.id,
+            productinfo: doc.data(),
+          }))
+        );
+      });
+  }, []);
   const handleChange = (event) => {
     const name = event.target.name;
     setState({
@@ -55,10 +146,36 @@ function Stock() {
     });
   };
   const handleChangeProveedor = (e) => {
-    const name = e.target.name;
-    setProveedor({
-      [name]: e.target.value,
+    let proveedorinfo = JSON.parse(e.target.value);
+    setProveedor(proveedorinfo);
+  };
+
+  const handeChangeRestInfo = (e) => {
+    const info = e.target.name;
+    setRestInfo({
+      ...restInfo,
+      [info]: e.target.value,
     });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    db.collection("stock")
+      .add({
+        name: nameproducto.toUpperCase(),
+        amount: cantidad,
+        price: precio,
+        stockmin: minimo,
+        stockmax: maximo,
+        category: categoria,
+        supplier: supplier,
+      })
+      .then((result) => {
+        console.log("producto ingresado correctamente!");
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
   return (
     <div className="stock">
@@ -68,13 +185,14 @@ function Stock() {
         </div>
         <div className="suppliers__error"></div>
         <div className="stock__inputscontainer">
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="stock__inputs">
               <TextField
                 id="outlined-basic"
                 label="Nombre"
                 variant="outlined"
-                name="name"
+                name="nameproducto"
+                onChange={handeChangeRestInfo}
               />
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel htmlFor="outlined-age-native-simple">
@@ -107,6 +225,7 @@ function Stock() {
                 label="Cantidad"
                 variant="outlined"
                 name="cantidad"
+                onChange={handeChangeRestInfo}
               />
               <TextField
                 id="outlined-basic"
@@ -114,6 +233,7 @@ function Stock() {
                 label="Precio"
                 variant="outlined"
                 name="precio"
+                onChange={handeChangeRestInfo}
               />
             </div>
             <div className="stock__inputs3">
@@ -121,13 +241,17 @@ function Stock() {
                 id="outlined-basic"
                 label="Stock Minimo"
                 variant="outlined"
+                type="number"
                 name="minimo"
+                onChange={handeChangeRestInfo}
               />
               <TextField
                 id="outlined-basic"
                 label="Stock Máximo"
                 variant="outlined"
+                type="number"
                 name="maximo"
+                onChange={handeChangeRestInfo}
               />
             </div>
             <div className="stock__inputs4">
@@ -141,7 +265,7 @@ function Stock() {
                 <Select
                   className={classes.selectControlProveedor}
                   native
-                  value={proveedor.proveedor}
+                  value={supplier.proveedor}
                   onChange={handleChangeProveedor}
                   label="Proveedor"
                   inputProps={{
@@ -150,9 +274,15 @@ function Stock() {
                   }}
                 >
                   <option aria-label="None" value="" />
-                  {proveedores.map((prove) => (
-                    <option key={prove.id} value={prove.infodata.name}>
-                      {prove.infodata.name}
+                  {proveedores.map(({ idproveedor, infodata }) => (
+                    <option
+                      key={idproveedor}
+                      value={JSON.stringify({
+                        id: idproveedor,
+                        nameproveedor: infodata.name,
+                      })}
+                    >
+                      {infodata.name}
                     </option>
                   ))}
                 </Select>
@@ -170,6 +300,52 @@ function Stock() {
             </div>
           </form>
         </div>
+      </div>
+      <div className="suppliers2">
+        <Paper className={classes.root}>
+          <TableContainer className={classes.container}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {products
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(({ idproduct, productinfo }) => {
+                    return (
+                      <Product
+                        key={idproduct}
+                        id={idproduct}
+                        infodata={productinfo}
+                      />
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 50]}
+            component="div"
+            count={products.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+            labelRowsPerPage="Filas por página"
+            backIconButtonText="Pagina anterior"
+            nextIconButtonText="Siguiente pagina"
+          />
+        </Paper>
       </div>
     </div>
   );

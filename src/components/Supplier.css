@@ -12,6 +12,7 @@
   letter-spacing: 0.2em;
   cursor: pointer;
   transition: all 0.2s;
+  outline: none;
 }
 .supplier__buttondisagree:hover {
   color: white;
@@ -28,6 +29,7 @@
   letter-spacing: 0.2em;
   cursor: pointer;
   transition: all 0.2s;
+  outline: none;
 }
 .supplier__buttonagree:hover {
   color: white;

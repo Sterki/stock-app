@@ -91,7 +91,7 @@ function Header() {
           {["left"].map((anchor) => (
             <React.Fragment key={anchor}>
               <MenuIcon
-                style={{ color: "white" }}
+                style={{ color: "white", outline: "none" }}
                 onClick={toggleDrawer(anchor, true)}
               />
               <Drawer

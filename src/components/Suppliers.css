@@ -30,24 +30,14 @@
   margin-right: 2.5rem;
   cursor: pointer;
   transition: all 0.2s;
+  outline: none;
 }
 .suppliers__buttonagregar > button:hover {
   border: 1px solid transparent;
   background-color: var(--azul);
   color: white;
 }
-.buttonagregarmas::after {
-  content: "+";
-  color: var(--azul);
-  margin-left: 3px;
-  transform: scale(0.3);
-}
-.buttonagregarmenos::after {
-  content: "-";
-  color: var(--azul);
-  transform: scale(1);
-  margin-left: 3px;
-}
+
 @media (min-width: 768px) {
   .suppliers__container {
     max-width: 1000px;
@@ -141,6 +131,7 @@
 }
 .suppliers__title > h3 {
   font-weight: 500;
+  font-size: 1.2rem;
   color: var(--negro);
   text-transform: uppercase;
 }
