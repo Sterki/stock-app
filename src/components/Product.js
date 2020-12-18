@@ -3,6 +3,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { Tooltip } from "@material-ui/core";
+import "./Product.css";
 import ProgressBar from "react-bootstrap/ProgressBar";
 // import "bootstrap/dist/css/bootstrap.min.css";
 import db from "./../firebase";
@@ -59,35 +60,54 @@ function Product({ id, infodata }) {
         <TableCell>{infodata.supplier.nameproveedor}</TableCell>
         <TableCell>{infodata.name}</TableCell>
         <TableCell>{infodata.category}</TableCell>
-        <TableCell>$ {infodata.price}</TableCell>
         <TableCell>
-          {infodata.amount} / {infodata.stockmax}
+          <strong>$</strong> {infodata.price}
         </TableCell>
         <TableCell>
+          {infodata.amount} / <strong>{infodata.stockmax}</strong>
+        </TableCell>
+        <TableCell style={{ width: "100%" }}>
           {calculostock <= calculostockmin ? (
-            <ProgressBar
-              style={{ height: "2rem" }}
-              striped
-              variant="danger"
-              now={calculostock}
-              label={`${calculostock}%`}
-            />
+            <div
+              className="product__divprogress"
+              style={{
+                width: `${calculostock}%`,
+                backgroundColor: "#d9534f",
+                position: "relative",
+                textAlign: "center",
+                padding: "0.2rem",
+                borderRadius: "30px",
+                color: "white",
+              }}
+            >
+              {calculostock}%
+            </div>
           ) : calculostock <= stockwarnig ? (
-            <ProgressBar
-              style={{ height: "2rem" }}
-              striped
-              variant="warning"
-              now={calculostock}
-              label={`${calculostock}%`}
-            />
+            <div
+              style={{
+                width: `${calculostock}%`,
+                backgroundColor: "#f0ad4e",
+                textAlign: "center",
+                padding: "0.2rem",
+                borderRadius: "30px",
+                color: "white",
+              }}
+            >
+              {calculostock}%
+            </div>
           ) : calculostock > stockwarnig ? (
-            <ProgressBar
-              style={{ height: "2rem" }}
-              striped
-              variant="success"
-              now={calculostock}
-              label={`${calculostock}%`}
-            />
+            <div
+              style={{
+                width: `${calculostock}%`,
+                backgroundColor: "#5cb85c",
+                textAlign: "center",
+                padding: "0.2rem",
+                borderRadius: "30px",
+                color: "white",
+              }}
+            >
+              {calculostock}%
+            </div>
           ) : null}
         </TableCell>
         <TableCell>

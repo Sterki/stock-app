@@ -6,6 +6,7 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import { makeStyles } from "@material-ui/core/styles";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import firebase from "firebase";
 
 // table import
 import Paper from "@material-ui/core/Paper";
@@ -128,7 +129,7 @@ function Stock() {
 
   useEffect(() => {
     db.collection("stock")
-      // .orderBy("created", "desc")
+      .orderBy("created", "desc")
       .onSnapshot((snapshot) => {
         setProducts(
           snapshot.docs.map((doc) => ({
@@ -149,7 +150,6 @@ function Stock() {
     let proveedorinfo = JSON.parse(e.target.value);
     setProveedor(proveedorinfo);
   };
-
   const handeChangeRestInfo = (e) => {
     const info = e.target.name;
     setRestInfo({
@@ -169,6 +169,7 @@ function Stock() {
         stockmax: maximo,
         category: categoria,
         supplier: supplier,
+        created: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then((result) => {
         console.log("producto ingresado correctamente!");

@@ -101,7 +101,8 @@ function Header() {
               >
                 <div className="header__toggledrawwer">
                   <div className="header__title">
-                    <h1>App Stock</h1>
+                    <h3>Constructora</h3>
+                    <h1>ANTA LTDA</h1>
                   </div>
                   <Navbar />
                 </div>

@@ -22,9 +22,19 @@
 }
 .header__title {
   padding: 1rem;
-  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+  margin-bottom: 1rem;
 }
 .header__title > h1 {
+  color: var(--azul);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--azul);
+  padding-bottom: 1rem;
+}
+.header__title > h3 {
   color: var(--azul);
   text-transform: uppercase;
 }
