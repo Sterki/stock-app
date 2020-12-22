@@ -50,13 +50,13 @@ const columns = [
   {
     id: "phone",
     label: "Teléfono",
-    minWidth: 170,
+    minWidth: 100,
     align: "left",
   },
   {
     id: "delete",
     label: "#",
-    minWidth: 50,
+    minWidth: 100,
     align: "left",
   },
 ];

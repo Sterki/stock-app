@@ -1,6 +1,22 @@
-.MuiTableCell-root > .MuiSvgIcon-root {
+.MuiTableCell-root > .MuiSvgIcon-root:last-child {
   color: rgb(199, 5, 5);
   cursor: pointer;
+  padding: 0.2rem;
+  border: 1px solid transparent;
+  transition: all 0.1s;
+  margin-left: 0.1rem;
+}
+.MuiTableCell-root > .MuiSvgIcon-root:last-child:hover {
+  border: 1px solid rgb(199, 5, 5);
+}
+.MuiTableCell-root > .MuiSvgIcon-root:first-child {
+  color: var(--azul);
+  cursor: pointer;
+  padding: 0.2rem;
+  border: 1px solid transparent;
+}
+.MuiTableCell-root > .MuiSvgIcon-root:first-child:hover {
+  border: 1px solid var(--azul);
 }
 .supplier__buttondisagree {
   padding: 0.4rem;
@@ -48,4 +64,18 @@
 }
 .MuiTableRow-root:nth-of-type(odd) {
   background-color: #f3f2f8;
+}
+.suppliers__titlemodal {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.suppliers__titlemodal > h3 {
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: var(--negro);
+  text-transform: uppercase;
 }

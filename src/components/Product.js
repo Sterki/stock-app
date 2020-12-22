@@ -13,6 +13,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import WarningIcon from "@material-ui/icons/Warning";
 import Swal from "sweetalert2";
+import EditIcon from "@material-ui/icons/Edit";
+
 // import "bootstrap/dist/css/bootstrap.min.css";
 
 function Product({ id, infodata }) {
@@ -61,17 +63,18 @@ function Product({ id, infodata }) {
         <TableCell>{infodata.name}</TableCell>
         <TableCell>{infodata.category}</TableCell>
         <TableCell>
-          <strong>$</strong> {infodata.price}
+          <strong>$</strong> {infodata.price} /u
         </TableCell>
         <TableCell>
-          {infodata.amount} / <strong>{infodata.stockmax}</strong>
+          {infodata.stockmin} / {infodata.amount} /{" "}
+          <strong>{infodata.stockmax}</strong>
         </TableCell>
-        <TableCell style={{ width: "100%" }}>
+        <TableCell style={{ width: "300px" }}>
           {calculostock <= calculostockmin ? (
             <div
               className="product__divprogress"
               style={{
-                width: `${calculostock}%`,
+                width: `${calculostock > 100 ? 100 : calculostock}%`,
                 backgroundColor: "#d9534f",
                 position: "relative",
                 textAlign: "center",
@@ -98,7 +101,7 @@ function Product({ id, infodata }) {
           ) : calculostock > stockwarnig ? (
             <div
               style={{
-                width: `${calculostock}%`,
+                width: `${calculostock > 100 ? 100 : calculostock}%`,
                 backgroundColor: "#5cb85c",
                 textAlign: "center",
                 padding: "0.2rem",
@@ -111,7 +114,10 @@ function Product({ id, infodata }) {
           ) : null}
         </TableCell>
         <TableCell>
-          <Tooltip title="Eliminar Cliente">
+          <Tooltip title="Editar Producto">
+            <EditIcon />
+          </Tooltip>
+          <Tooltip title="Eliminar Producto">
             <DeleteForeverIcon onClick={(e) => handleClickOpen(infodata)} />
           </Tooltip>
         </TableCell>

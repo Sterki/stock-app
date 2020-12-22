@@ -34,19 +34,19 @@ const columns = [
   {
     id: "city",
     label: "Ciudad",
-    minWidth: 170,
+    minWidth: 130,
     align: "left",
   },
   {
     id: "creador",
     label: "Ingresado Por",
-    minWidth: 170,
+    minWidth: 100,
     align: "left",
   },
   {
     id: "delete",
     label: "#",
-    minWidth: 50,
+    minWidth: 100,
     align: "left",
   },
 ];
@@ -129,9 +129,9 @@ function Suppliers() {
       return;
     } else {
       db.collection("suppliers")
-        .doc(rutsupplier)
-        .set({
+        .add({
           name: namesupplier.toUpperCase(),
+          rut: rutsupplier,
           address: address.toUpperCase(),
           city: city.toUpperCase(),
           province: province.toUpperCase(),
@@ -272,7 +272,7 @@ function Suppliers() {
                     return (
                       <Supplier
                         key={row.idInfo}
-                        id={row.idInfo}
+                        idsupplier={row.idInfo}
                         infodata={row.suppInfo}
                       />
                     );
