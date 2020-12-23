@@ -33,7 +33,7 @@
 }
 
 .stock__inputscontainer {
-  max-width: 900px;
+  max-width: 9000px;
   width: 90%;
   padding: 0.5rem;
   display: flex;
@@ -42,7 +42,7 @@
 }
 @media (min-width: 768px) {
   .stock__inputscontainer {
-    max-width: 700px;
+    max-width: 900px;
     width: 65%;
     padding: 0rem;
     display: flex;
@@ -107,6 +107,7 @@
   display: flex;
   justify-content: center;
   margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 .stock__button > button {
   min-width: 18rem;
@@ -125,4 +126,9 @@
   border: 2px solid transparent;
   background-color: var(--azul);
   color: white;
+}
+.stock__search {
+  max-width: 95%;
+  margin: 0 auto;
+  margin-bottom: 1rem;
 }

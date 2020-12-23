@@ -46,7 +46,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const columns = [
-  { id: "proveedor", label: "Proveedor", minWidth: 170 },
+  { id: "codigo", label: "Código", minWidth: 80 },
+  { id: "proveedor", label: "Proveedor", minWidth: 120 },
   {
     id: "nombreproducto",
     label: "Nombre Producto",
@@ -93,7 +94,6 @@ function Stock() {
   });
   const [proveedores, setProveedores] = useState([]);
   const [supplier, setProveedor] = useState({
-    id: "",
     nameproveedor: "",
   });
 
@@ -106,9 +106,18 @@ function Stock() {
     precio: "",
     minimo: "",
     maximo: "",
+    codigoproducto: "",
   });
 
-  const { nameproducto, cantidad, precio, minimo, maximo } = restInfo;
+  const {
+    nameproducto,
+    cantidad,
+    precio,
+    minimo,
+    maximo,
+    codigoproducto,
+  } = restInfo;
+  const { nameproveedor } = supplier;
   const { categoria } = state;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -157,13 +166,15 @@ function Stock() {
     });
   };
   const handleChangeProveedor = (e) => {
-    let proveedorinfo = JSON.parse(e.target.value);
-
-    setProveedor(proveedorinfo);
+    // let proveedorinfo = JSON.parse(e.target.value);
+    console.log("el proveedor es", e.target.name);
+    setProveedor({
+      ...supplier,
+      [e.target.name]: e.target.value,
+    });
   };
   const handeChangeRestInfo = (e) => {
     const info = e.target.name;
-
     setRestInfo({
       ...restInfo,
       [info]: e.target.value,
@@ -189,12 +200,13 @@ function Stock() {
       db.collection("stock")
         .add({
           name: nameproducto.toUpperCase(),
+          productcode: codigoproducto.toUpperCase(),
           amount: cantidad,
           price: precio,
           stockmin: minimo,
           stockmax: maximo,
-          category: categoria,
-          supplier: supplier,
+          category: categoria.toUpperCase(),
+          supplier: nameproveedor.toUpperCase(),
           created: firebase.firestore.FieldValue.serverTimestamp(),
         })
         .then((result) => {
@@ -209,6 +221,7 @@ function Stock() {
         precio: "",
         minimo: "",
         maximo: "",
+        codigoproducto: "",
       });
     }
   };
@@ -228,6 +241,24 @@ function Stock() {
       // boton.classList.remove("buttonagregarmas");
     }
   }
+  const funcionObtienebusqueda = (e) => {
+    let input = e;
+    let filter = input.toUpperCase();
+    let table = document.getElementById("myTable");
+    let tr = table.getElementsByTagName("tr");
+
+    for (let i = 0; i < tr.length; i++) {
+      let td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        let txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  };
   return (
     <div className="stock">
       <div className="suppliers__buttonagregar">
@@ -242,18 +273,27 @@ function Stock() {
         <div className="suppliers__error">
           {error && <Alert severity="error">{error}</Alert>}
         </div>
-        <div className="suppliers__error"></div>
         <div className="stock__inputscontainer">
           <form onSubmit={handleSubmit}>
             <div className="stock__inputs">
               <TextField
                 id="outlined-basic"
+                label="Codigo Producto"
+                variant="outlined"
+                name="codigoproducto"
+                value={codigoproducto}
+                onChange={handeChangeRestInfo}
+              />
+              <TextField
+                id="outlined-basic"
+                style={{ marginRight: "1rem" }}
                 label="Nombre"
                 variant="outlined"
                 name="nameproducto"
                 value={nameproducto}
                 onChange={handeChangeRestInfo}
               />
+
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel htmlFor="outlined-age-native-simple">
                   Categoria
@@ -329,11 +369,11 @@ function Stock() {
                 <Select
                   className={classes.selectControlProveedor}
                   native
-                  value={supplier.proveedor}
+                  value={nameproveedor}
                   onChange={handleChangeProveedor}
                   label="Proveedor"
                   inputProps={{
-                    name: "proveedor",
+                    name: "nameproveedor",
                     id: "outlined-age-native-simple",
                   }}
                 >
@@ -341,10 +381,11 @@ function Stock() {
                   {proveedores.map(({ idproveedor, infodata }) => (
                     <option
                       key={idproveedor}
-                      value={JSON.stringify({
-                        id: idproveedor,
-                        nameproveedor: infodata.name,
-                      })}
+                      value={infodata.name}
+                      // value={JSON.stringify({
+                      //   id: idproveedor,
+                      //   nameproveedor: infodata.name,
+                      // })}
                     >
                       {infodata.name}
                     </option>
@@ -365,10 +406,20 @@ function Stock() {
           </form>
         </div>
       </div>
+      <div className="stock__search">
+        <TextField
+          id="outlined-search"
+          label="Buscar por código producto"
+          type="text"
+          variant="outlined"
+          style={{ width: "250px" }}
+          onKeyUp={(e) => funcionObtienebusqueda(e.target.value)}
+        />
+      </div>
       <div className="suppliers2">
         <Paper className={classes.root}>
           <TableContainer className={classes.container}>
-            <Table stickyHeader aria-label="sticky table">
+            <Table stickyHeader aria-label="sticky table" id="myTable">
               <TableHead>
                 <TableRow>
                   {columns.map((column) => (

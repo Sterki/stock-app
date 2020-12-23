@@ -1,0 +1,19 @@
+.product__codeproduct {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+#product__addcantidad {
+  display: flex;
+
+  align-items: center;
+}
+#product__addcantidad > .MuiSvgIcon-root {
+  color: #2196f3;
+  border: 1px solid transparent;
+  margin-left: 0.3rem;
+}
+#product__addcantidad > .MuiSvgIcon-root:hover {
+  border: 1px solid #2196f3;
+}

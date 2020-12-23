@@ -275,7 +275,7 @@ function Customer({ id, infodata }) {
                   />
                   <TextField
                     id="outlined-basic"
-                    label="Provincia"
+                    label="Region"
                     variant="outlined"
                     name="province"
                     value={province}
