@@ -1,4 +1,3 @@
-import Product from "../components/Product";
 import { GET_PRODUCT_TO_EDIT } from "./../types";
 
 export function productToEditAction(product) {

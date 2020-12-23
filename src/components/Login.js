@@ -26,7 +26,6 @@ function Login() {
   });
   const history = useHistory();
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const { email, password } = user;
   const handleChange = (e) => {

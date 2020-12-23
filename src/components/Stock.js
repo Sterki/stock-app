@@ -5,7 +5,6 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import { makeStyles } from "@material-ui/core/styles";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import firebase from "firebase";
 import MuiAlert from "@material-ui/lab/Alert";
 // table import
@@ -20,6 +19,7 @@ import TableRow from "@material-ui/core/TableRow";
 
 import db from "./../firebase";
 import Product from "./Product";
+import { useSelector } from "react-redux";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -89,6 +89,8 @@ const columns = [
 
 function Stock() {
   const classes = useStyles();
+  const categorys = useSelector((state) => state.products.categorys);
+  const userAuth = useSelector((state) => state.users.user);
   const [state, setState] = useState({
     categoria: "",
   });
@@ -208,6 +210,7 @@ function Stock() {
           category: categoria.toUpperCase(),
           supplier: nameproveedor.toUpperCase(),
           created: firebase.firestore.FieldValue.serverTimestamp(),
+          creator: userAuth.email,
         })
         .then((result) => {
           console.log("producto ingresado correctamente!");
@@ -227,7 +230,7 @@ function Stock() {
   };
   function showAndHideDiv() {
     let div = document.getElementById("myDiv");
-    let boton = document.getElementById("botonagregar");
+    // let boton = document.getElementById("botonagregar");
 
     if (div.style.display === "flex") {
       div.style.display = "none";
@@ -309,12 +312,12 @@ function Stock() {
                     id: "outlined-age-native-simple",
                   }}
                 >
-                  <option aria-label="None" value="" />
-                  <option>Pétreos</option>
-                  <option>Cerámicas y vidrios</option>
-                  <option>Compuestos</option>
-                  <option>Metálicos</option>
-                  <option>Aglutinantes</option>
+                  <option>Categorias</option>
+                  {categorys.map((cate) => (
+                    <option key={cate.id} value={cate.categoria}>
+                      {cate.categoria}
+                    </option>
+                  ))}
                 </Select>
               </FormControl>
             </div>

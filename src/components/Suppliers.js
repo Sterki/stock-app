@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField } from "@material-ui/core";
 import "./Suppliers.css";
 import db from "./../firebase";
@@ -92,13 +92,18 @@ function Suppliers() {
 
   useEffect(() => {
     let isRendered = true;
-    db.collection("suppliers")
-      .orderBy("created", "desc")
-      .onSnapshot((snapshot) => {
-        setSuppliers(
-          snapshot.docs.map((doc) => ({ idInfo: doc.id, suppInfo: doc.data() }))
-        );
-      });
+    if (isRendered) {
+      db.collection("suppliers")
+        .orderBy("created", "desc")
+        .onSnapshot((snapshot) => {
+          setSuppliers(
+            snapshot.docs.map((doc) => ({
+              idInfo: doc.id,
+              suppInfo: doc.data(),
+            }))
+          );
+        });
+    }
     return () => {
       isRendered = false;
     };
@@ -161,7 +166,7 @@ function Suppliers() {
 
   function showAndHideDiv() {
     let div = document.getElementById("myDiv");
-    let boton = document.getElementById("botonagregar");
+    // let boton = document.getElementById("botonagregar");
 
     if (div.style.display === "flex") {
       div.style.display = "none";

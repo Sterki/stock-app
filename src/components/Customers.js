@@ -1,10 +1,9 @@
 import { makeStyles, Snackbar, TextField } from "@material-ui/core";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Customers.css";
 import "./Suppliers.css";
 import db from "./../firebase";
 import MuiAlert from "@material-ui/lab/Alert";
-import { SettingsPowerRounded } from "@material-ui/icons";
 import firebase from "firebase";
 import { useSelector } from "react-redux";
 import Customer from "./Customer";
@@ -116,13 +115,15 @@ function Customers() {
 
   useEffect(() => {
     let isRendering = true;
-    db.collection("customers")
-      .orderBy("created", "desc")
-      .onSnapshot((snapshot) => {
-        setCustomers(
-          snapshot.docs.map((doc) => ({ id: doc.id, datainfo: doc.data() }))
-        );
-      });
+    if (isRendering) {
+      db.collection("customers")
+        .orderBy("created", "desc")
+        .onSnapshot((snapshot) => {
+          setCustomers(
+            snapshot.docs.map((doc) => ({ id: doc.id, datainfo: doc.data() }))
+          );
+        });
+    }
     return () => {
       isRendering = false;
     };
@@ -204,7 +205,7 @@ function Customers() {
   };
   function showAndHideDiv() {
     let div = document.getElementById("myDiv");
-    let boton = document.getElementById("botonagregar");
+    // let boton = document.getElementById("botonagregar");
 
     if (div.style.display === "flex") {
       div.style.display = "none";

@@ -4,7 +4,7 @@ import TableRow from "@material-ui/core/TableRow";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { FormControl, InputLabel, Select, Tooltip } from "@material-ui/core";
 import "./Product.css";
-import ProgressBar from "react-bootstrap/ProgressBar";
+
 // import "bootstrap/dist/css/bootstrap.min.css";
 import db from "./../firebase";
 import Dialog from "@material-ui/core/Dialog";
@@ -54,6 +54,8 @@ function Alert(props) {
 function Product({ id, infodata }) {
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const categorys = useSelector((state) => state.products.categorys);
+
   const classes = useStyles();
   const [error, setError] = useState("");
   const [productoEliminar, setClienteEliminar] = useState();
@@ -372,11 +374,11 @@ function Product({ id, infodata }) {
                       <option value={producto.category}>
                         {producto.category}
                       </option>
-                      <option>Pétreos</option>
-                      <option>Cerámicas y vidrios</option>
-                      <option>Compuestos</option>
-                      <option>Metálicos</option>
-                      <option>Aglutinantes</option>
+                      {categorys.map((cate) => (
+                        <option key={cate.id} value={cate.categoria}>
+                          {cate.categoria}
+                        </option>
+                      ))}
                     </Select>
                   </FormControl>
                 </div>

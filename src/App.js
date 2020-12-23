@@ -6,7 +6,7 @@ import Register from "./components/Register";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { auth } from "./firebase";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getUserAction } from "./actions/usersActions";
 import PrincipalPage from "./components/PrincipalPage";
 import Header from "./components/Header";
@@ -24,7 +24,7 @@ function wrappApp() {
 }
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.users.user);
+
   useEffect(() => {
     auth.onAuthStateChanged((result) => {
       if (result) {

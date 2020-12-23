@@ -35,6 +35,7 @@ function Header() {
   const classes = useStyles();
   const history = useHistory();
   const user = useSelector((state) => state.users.user);
+
   const dispatch = useDispatch();
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -62,10 +63,6 @@ function Header() {
   const { hours, minutes, seconds } = thetime;
   useEffect(() => {
     function clock() {
-      let hour = document.getElementById("hours");
-      let min = document.getElementById("minutes");
-      let sec = document.getElementById("seconds");
-
       let h = new Date().getHours();
       let m = new Date().getMinutes();
       let s = new Date().getSeconds();
@@ -78,7 +75,7 @@ function Header() {
     }
     setInterval(clock, 1000);
   }, []);
-
+  if (user === null) return null;
   return (
     <div className="header">
       <div className="header__menuicon">
@@ -114,7 +111,8 @@ function Header() {
       </div>
       <div className="header__username">
         <span>
-          Bienvenido <strong>{user?.email}</strong>
+          Bienvenido{" "}
+          <strong>{user?.displayName ? user.displayName : user.email}</strong>
         </span>
       </div>
       <div className="header__time">

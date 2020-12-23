@@ -48,6 +48,7 @@ function Supplier({ idsupplier, infodata }) {
   const [proveedorEliminar, setProveedorEliminar] = useState();
   const dispatch = useDispatch();
   const useAuth = useSelector((state) => state.users.user);
+
   const suppliertoedit = useSelector((state) => state.suppliers.suppliertoedit);
   const [errorForm, setErrorForm] = useState("");
   const [proveedor, saveProveedor] = useState({
@@ -64,11 +65,7 @@ function Supplier({ idsupplier, infodata }) {
   }, [suppliertoedit]);
 
   if (suppliertoedit === null) return null;
-  const { name, creator, address, city, province, rut } = proveedor;
-
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
+  const { name, address, city, province, rut } = proveedor;
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -135,11 +132,11 @@ function Supplier({ idsupplier, infodata }) {
       db.collection("suppliers")
         .doc(idsupplier)
         .update({
-          name: name,
+          name: name.toUpperCase(),
           rut: rut,
-          address: address,
-          province: province,
-          city: city,
+          address: address.toUpperCase(),
+          province: province.toUpperCase(),
+          city: city.toUpperCase(),
           creator: useAuth.email,
           created: firebase.firestore.FieldValue.serverTimestamp(),
         })
