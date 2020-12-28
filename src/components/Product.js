@@ -73,10 +73,14 @@ function Product({ id, infodata }) {
     customers,
     valor,
     openModalDespacho,
+    enviado,
+    cantidadIngresada,
+    setEnviado,
     handleCloseModalDespacho,
     handleClickOpenDespacho,
     handleChangePrice,
     handleSubmitPrice,
+    setCantiadingresada,
   } = useOpenModalDespacho();
 
   // here getting the producttoedit to show into ours inputs
@@ -471,10 +475,14 @@ function Product({ id, infodata }) {
           idproduct={id}
           customers={customers}
           valor={valor}
+          enviado={enviado}
           openModalDespacho={openModalDespacho}
+          cantidadIngresada={cantidadIngresada}
           handleCloseModalDespacho={handleCloseModalDespacho}
           handleChangePrice={handleChangePrice}
           handleSubmitPrice={handleSubmitPrice}
+          setEnviado={setEnviado}
+          setCantiadingresada={setCantiadingresada}
         />
       </div>
     </>

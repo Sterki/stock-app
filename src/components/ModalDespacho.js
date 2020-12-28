@@ -30,13 +30,18 @@ const useStyles = makeStyles((theme) => ({
 function ModalDespacho({
   idproduct,
   customers,
+  enviado,
   openModalDespacho,
+  cantidadIngresada,
   handleCloseModalDespacho,
   handleChangePrice,
   valor,
   handleSubmitPrice,
+  setCantiadingresada,
 }) {
   const classes = useStyles();
+
+  let total = valor.amount - cantidadIngresada;
 
   return (
     <div>
@@ -72,7 +77,8 @@ function ModalDespacho({
                     Código del producto: <strong>{valor.productcode}</strong>
                   </span>
                   <span>
-                    Stock Actual: <strong>{valor.amount}</strong>
+                    Stock Actual:{" "}
+                    <strong>{cantidadIngresada ? total : valor.amount}</strong>
                   </span>
                   <span>
                     Precion Unitario: <strong>$ {valor.price}</strong>
@@ -107,7 +113,10 @@ function ModalDespacho({
                     {customers.map(({ idcustomer, customerinfo }) => (
                       <option
                         key={idcustomer}
-                        value={customerinfo.namecustomer}
+                        value={JSON.stringify({
+                          id: idcustomer,
+                          customerinfo: customerinfo,
+                        })}
                       >
                         {customerinfo.namecustomer}
                       </option>
@@ -122,9 +131,15 @@ function ModalDespacho({
                   variant="outlined"
                   type="number"
                   name="cantidad"
-                  onChange={handleChangePrice}
+                  value={cantidadIngresada}
+                  onChange={(e) => setCantiadingresada(Number(e.target.value))}
                 />
               </div>
+              {enviado ? (
+                <div>
+                  <span>Ir a guia de despacho</span>
+                </div>
+              ) : null}
               <div className="suppliers__button">
                 <button type="submit">Enviar a guia de Despacho</button>
               </div>
