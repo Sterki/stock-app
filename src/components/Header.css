@@ -44,8 +44,6 @@
 .header__time {
   display: flex;
   align-items: center;
-  -webkit-box-reflect: below 1px;
-  -moz-box-reflect: below 1px;
 }
 .header__clock {
   color: white;

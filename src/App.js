@@ -14,6 +14,7 @@ import { closeSesionAction } from "./actions/usersActions";
 import Suppliers from "./components/Suppliers";
 import Customers from "./components/Customers";
 import Stock from "./components/Stock";
+import ModalDespacho from "./components/ModalDespacho";
 
 function wrappApp() {
   return (
@@ -47,6 +48,9 @@ function App() {
       <Provider store={store}>
         <Router>
           <Switch>
+            <Route path="/despacho">
+              <ModalDespacho />
+            </Route>
             <Route path="/register">
               <Register />
             </Route>

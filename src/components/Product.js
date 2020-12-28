@@ -25,9 +25,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import { TextField } from "@material-ui/core";
 import { productToEditAction } from "../actions/productActions";
 import MuiAlert from "@material-ui/lab/Alert";
+import DescriptionIcon from "@material-ui/icons/Description";
 
 //opciones para la cantidad
 import QueueIcon from "@material-ui/icons/Queue";
+
+//custom hooks here
+import useOpenModalDespacho from "./../CustomHooks/useOpenModalDespacho";
+import ModalDespacho from "./ModalDespacho";
 
 // import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -61,6 +66,19 @@ function Product({ id, infodata }) {
   const [productoEliminar, setClienteEliminar] = useState();
   const [suppliers, setSuppliers] = useState([]);
   const dispatch = useDispatch();
+
+  //custok hook para despacho
+
+  const {
+    customers,
+    valor,
+    openModalDespacho,
+    handleCloseModalDespacho,
+    handleClickOpenDespacho,
+    handleChangePrice,
+    handleSubmitPrice,
+  } = useOpenModalDespacho();
+
   // here getting the producttoedit to show into ours inputs
 
   const [producto, saveProducto] = useState({
@@ -256,9 +274,19 @@ function Product({ id, infodata }) {
             </div>
           ) : null}
         </TableCell>
-        <TableCell>
+        <TableCell id="product__celloption">
+          <Tooltip title="Despachar">
+            <DescriptionIcon
+              id="product__despacho"
+              onClick={(e) => handleClickOpenDespacho(infodata, id)}
+              // onClick={(e) => handleClickOpenDespacho(infodata)}
+            />
+          </Tooltip>
           <Tooltip title="Editar Producto">
-            <EditIcon onClick={(e) => handleClickOpenModal(infodata)} />
+            <EditIcon
+              id="product__edit"
+              onClick={(e) => handleClickOpenModal(infodata)}
+            />
           </Tooltip>
           <Tooltip title="Eliminar Producto">
             <DeleteForeverIcon onClick={(e) => handleClickOpen(infodata)} />
@@ -437,6 +465,17 @@ function Product({ id, infodata }) {
             </div>
           </Fade>
         </Modal>
+      </div>
+      <div>
+        <ModalDespacho
+          idproduct={id}
+          customers={customers}
+          valor={valor}
+          openModalDespacho={openModalDespacho}
+          handleCloseModalDespacho={handleCloseModalDespacho}
+          handleChangePrice={handleChangePrice}
+          handleSubmitPrice={handleSubmitPrice}
+        />
       </div>
     </>
   );
