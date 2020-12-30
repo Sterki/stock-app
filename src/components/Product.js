@@ -246,7 +246,7 @@ function Product({ id, infodata }) {
                 backgroundColor: "#d9534f",
                 position: "relative",
                 textAlign: "center",
-                padding: "0.5rem",
+                padding: "0.3rem",
                 borderRadius: "30px",
                 color: "white",
               }}
@@ -259,7 +259,7 @@ function Product({ id, infodata }) {
                 width: `${calculostock}%`,
                 backgroundColor: "#f0ad4e",
                 textAlign: "left",
-                padding: "0.5rem 0.5rem 0.5rem 0.2rem",
+                padding: "0.3rem 0.3rem 0.3rem 0.2rem",
                 borderRadius: "30px",
                 color: "white",
               }}
@@ -272,7 +272,7 @@ function Product({ id, infodata }) {
                 width: `${calculostock > 100 ? 100 : calculostock}%`,
                 backgroundColor: "#5cb85c",
                 textAlign: "center",
-                padding: "0.5rem",
+                padding: "0.3rem",
                 borderRadius: "30px",
                 color: "white",
               }}

@@ -36,8 +36,8 @@
 #product__celloption {
   display: flex;
   align-items: center;
+  padding-bottom: 1.5rem;
   border-bottom: 1px solid lightgray;
-  padding: 2rem;
 }
 .product__codeproduct {
   display: flex;

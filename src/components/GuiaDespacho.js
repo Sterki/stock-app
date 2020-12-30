@@ -2,18 +2,22 @@ import React, { useEffect, useState } from "react";
 import "./GuiaDespacho.css";
 import useOpenModalDespacho from "./../CustomHooks/useOpenModalDespacho";
 import { useSelector } from "react-redux";
+import { TouchAppOutlined } from "@material-ui/icons";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 
 function GuiaDespacho() {
   const listofproducts = useSelector(
     (state) => state.products.productstodeliver
   );
+
   const customerinfo = useSelector((state) => state.customers.customerinfo);
   const [fecha, setFecha] = useState({
     day: "",
     month: "",
     year: "",
   });
-  console.log(listofproducts);
+  // console.log(listofproducts);
   const { day, month, year } = fecha;
   useEffect(() => {
     let d = new Date().getDay();
@@ -25,19 +29,50 @@ function GuiaDespacho() {
       year: y,
     });
   }, []);
+  let sumacion = 0;
+  let iva = 0;
+  let total = 0;
+  for (let i = 0; i < listofproducts?.length; i++) {
+    let price = listofproducts[i].producto.price;
+    let totaporprice = price * listofproducts[i].cantidadadespachar;
+    sumacion = sumacion + totaporprice;
+    console.log(sumacion);
+    iva = sumacion * 0.19;
+    console.log(iva);
+    total = sumacion + iva;
+  }
+
+  function printDocument() {
+    const input = document.getElementById("divToPrint");
+    html2canvas(input, {
+      allowTaint: true,
+      scrollX: 0,
+      scrollY: -window.scrollY,
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      let width = pdf.internal.pageSize.getWidth();
+      let height = pdf.internal.pageSize.getHeight();
+      pdf.addImage(imgData, "JPEG", 0, 0); // asignar valores aqui
+      pdf.save(`Numerodeguia-${customerinfo?.idnumeroguia}.pdf`);
+    });
+  }
 
   return (
     <div className="guiadespacho">
-      <div className="guiadespacho__container">
+      <div className="guiadespacho__button">
+        <button onClick={printDocument}>Descargar Archivo</button>
+      </div>
+      <div className="guiadespacho__container" id="divToPrint">
         <div className="guiadespacho__header">
           <div className="guiadespacho__title">
             <h1>Constructora Annta</h1>
-            <span>rut: 56565656-k</span>
-            <span>Dirección: SAN ESTEBAN</span>
+            <span>R.U.T: 56565656-k</span>
+            <span>DIRECCION: SAN ESTEBAN</span>
           </div>
           <div className="guiadespacho__numeroguia">
             <h3>Guia de Despacho</h3>
-            <span>{customerinfo.idnumeroguia}</span>
+            <span>{customerinfo?.idnumeroguia}</span>
           </div>
         </div>
         <div className="guiadespacho__cliente">
@@ -116,28 +151,30 @@ function GuiaDespacho() {
           <table className="guiadespacho__table">
             <tr className="guiadespacho__tr">
               <th>Codigo</th>
-              <th>Descripción</th>
+              <th>Descripción / Nombre producto</th>
               <th>Cantidad</th>
               <th>Precio</th>
               <th>Total</th>
             </tr>
-            <tr className="guiadespacho__tr">
-              <td>0001</td>
-              <td>Producto prueba</td>
-              <td>10</td>
-              <td>$ 1200</td>
-              <td>$ 12000</td>
-            </tr>
+            {listofproducts?.map((product) => (
+              <tr className="guiadespacho__tr">
+                <td>{product.producto.productcode}</td>
+                <td>{product.producto.name}</td>
+                <td>{product.cantidadadespachar}</td>
+                <td>$ {product.producto.price}</td>
+                <td>$ {product.producto.price * product.cantidadadespachar}</td>
+              </tr>
+            ))}
           </table>
         </div>
         <div className="guiadespacho__totaladespachar">
           <div className="guiadespacho__totalcontainer">
             <div className="guiadespacho__opciones">
               <div>
-                <span>Monto Neto:</span>
+                <span>Monto Neto: </span>
               </div>
               <div>
-                <span>$ Monto here!</span>
+                <span>$ {sumacion}</span>
               </div>
             </div>
             <div className="guiadespacho__opciones">
@@ -145,7 +182,7 @@ function GuiaDespacho() {
                 <span>I.V.A 19%:</span>
               </div>
               <div>
-                <span>$ Monto here!</span>
+                <span>$ {iva.toFixed(0)}</span>
               </div>
             </div>
             <div className="guiadespacho__opciones">
@@ -153,7 +190,7 @@ function GuiaDespacho() {
                 <span>Total:</span>
               </div>
               <div>
-                <span>$ Monto here!</span>
+                <span>$ {total.toFixed(0)}</span>
               </div>
             </div>
           </div>
@@ -187,6 +224,9 @@ function GuiaDespacho() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="guiadespacho__button">
+        <button onClick={printDocument}>Descargar Archivo</button>
       </div>
     </div>
   );

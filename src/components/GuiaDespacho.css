@@ -89,6 +89,9 @@
 
   margin-top: 1rem;
 }
+.guiadespacho__detallesproducto {
+  margin-top: 2rem;
+}
 .guiadespacho__totalcontainer {
   width: 30%;
   border: 1px solid lightgray;
@@ -109,4 +112,27 @@
   display: flex;
   justify-content: space-between;
   padding: 1rem;
+}
+.guiadespacho__button {
+  max-width: 900px;
+  margin: 0 auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.guiadespacho__button > button {
+  padding: 0.5rem;
+  border: 1px solid var(--azul);
+  border-radius: 5px;
+  background-color: white;
+  color: var(--azul);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s;
+}
+.guiadespacho__button > button:hover {
+  color: white;
+  border: 1px solid transparent;
+  background-color: var(--azul);
 }

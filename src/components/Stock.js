@@ -56,7 +56,7 @@ const columns = [
   {
     id: "category",
     label: "Categoría",
-    minWidth: 100,
+    minWidth: 140,
     align: "left",
   },
   {
@@ -74,7 +74,7 @@ const columns = [
   {
     id: "estadostock",
     label: "Estado Stock ",
-    minWidth: 170,
+    minWidth: 150,
     align: "left",
   },
 
