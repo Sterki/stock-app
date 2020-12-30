@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { FormControl, InputLabel, Select, TextField } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import db from "./../firebase";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -31,12 +32,15 @@ function ModalDespacho({
   idproduct,
   customers,
   enviado,
+  valoragregado,
   openModalDespacho,
   cantidadIngresada,
   handleCloseModalDespacho,
   handleChangePrice,
+  handleChangeNumeroGuia,
   valor,
   handleSubmitPrice,
+  handleClickGetdespachoDetalles,
   setCantiadingresada,
 }) {
   const classes = useStyles();
@@ -77,15 +81,23 @@ function ModalDespacho({
                     Código del producto: <strong>{valor.productcode}</strong>
                   </span>
                   <span>
-                    Stock Actual:{" "}
-                    <strong>{cantidadIngresada ? total : valor.amount}</strong>
+                    Stock Actual: <strong>{valoragregado?.amount}</strong>
                   </span>
                   <span>
                     Precion Unitario: <strong>$ {valor.price}</strong>
                   </span>
                 </div>
               </div>
-
+              <div className="suppliers__inputs">
+                <TextField
+                  id="outlined-basic"
+                  label="Nº Guia de despacho"
+                  variant="outlined"
+                  type="text"
+                  name="numeroguia"
+                  onChange={handleChangeNumeroGuia}
+                />
+              </div>
               <div className="suppliers__inputs">
                 <FormControl
                   variant="outlined"
@@ -137,7 +149,12 @@ function ModalDespacho({
               </div>
               {enviado ? (
                 <div>
-                  <span>Ir a guia de despacho</span>
+                  <Link
+                    to="/guiadespacho"
+                    onClick={handleClickGetdespachoDetalles}
+                  >
+                    Ir a guia de despacho
+                  </Link>
                 </div>
               ) : null}
               <div className="suppliers__button">

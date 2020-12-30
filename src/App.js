@@ -15,6 +15,7 @@ import Suppliers from "./components/Suppliers";
 import Customers from "./components/Customers";
 import Stock from "./components/Stock";
 import ModalDespacho from "./components/ModalDespacho";
+import GuiaDespacho from "./components/GuiaDespacho";
 
 function wrappApp() {
   return (
@@ -48,6 +49,10 @@ function App() {
       <Provider store={store}>
         <Router>
           <Switch>
+            <Route path="/guiadespacho">
+              <Header />
+              <GuiaDespacho />
+            </Route>
             <Route path="/despacho">
               <ModalDespacho />
             </Route>

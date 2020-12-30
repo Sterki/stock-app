@@ -1,0 +1,112 @@
+.guiadespacho__container {
+  max-width: 900px;
+  width: 95%;
+  margin: 0 auto;
+  border: 1px solid lightgray;
+
+  margin-top: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 3rem;
+}
+.guiadespacho__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.guiadespacho__numeroguia {
+  border: 3px solid green;
+  padding: 1rem 3rem;
+  color: green;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.guiadespacho__numeroguia > h3 {
+  text-transform: uppercase;
+}
+.guiadespacho__numeroguia > span {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+.guiadespacho__title {
+  display: flex;
+  flex-direction: column;
+  color: green;
+}
+.guiadespacho__title > h1 {
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.guiadespacho__cliente {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+.guiadespacho__infocliente {
+  display: flex;
+  flex-direction: column;
+}
+.guiadespacho__detalle {
+  padding: 0.3rem 0rem;
+  display: flex;
+}
+.guiadespacho__detalle > div:first-child {
+  width: 130px;
+}
+.guiadespacho__table {
+  width: 100%;
+  border: 1px solid lightgray;
+}
+.guiadespacho__table > tr > th {
+  text-align: left;
+  padding: 0.5rem;
+}
+.guiadespacho__table,
+.guiadespacho__tr > th,
+.guiadespacho__tr > td {
+  border: 1px solid lightgray;
+  border-collapse: collapse;
+}
+.guiadespacho__table > tr > th {
+  text-align: center;
+}
+.guiadespacho__table > tr > td {
+  padding: 1rem;
+  height: 100%;
+}
+.guiadespacho__table > tr > th:nth-child(2) {
+  width: 25rem;
+}
+.guiadespacho__table > tr > th:nth-child(1) {
+  width: 10rem;
+}
+.guiadespacho__totaladespachar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+
+  margin-top: 1rem;
+}
+.guiadespacho__totalcontainer {
+  width: 30%;
+  border: 1px solid lightgray;
+  padding: 1rem;
+}
+.guiadespacho__opciones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.guiadespacho__recibido {
+  width: 100%;
+  border: 1px solid lightgray;
+  margin-top: 1rem;
+}
+.guiadespacho__recibidocontainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}

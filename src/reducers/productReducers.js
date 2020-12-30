@@ -1,4 +1,4 @@
-import { GET_PRODUCT_TO_EDIT } from "./../types";
+import { GET_PRODUCT_TO_EDIT, GET_LIST_PRODUCTS_TO_DELIVER } from "./../types";
 
 const inisialState = {
   producttoedit: {},
@@ -14,6 +14,7 @@ const inisialState = {
     { id: 9, categoria: "ARTEFACTOS BAÑO-ALCANTARILLADO" },
     { id: 10, categoria: "AGUA Y GAS" },
   ],
+  productstodeliver: null,
 };
 
 export default (state = inisialState, action) => {
@@ -22,6 +23,11 @@ export default (state = inisialState, action) => {
       return {
         ...state,
         producttoedit: action.payload,
+      };
+    case GET_LIST_PRODUCTS_TO_DELIVER:
+      return {
+        ...state,
+        productstodeliver: action.payload,
       };
     default:
       return state;

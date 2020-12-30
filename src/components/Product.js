@@ -74,6 +74,7 @@ function Product({ id, infodata }) {
     valor,
     openModalDespacho,
     enviado,
+    valoragregado,
     cantidadIngresada,
     setEnviado,
     handleCloseModalDespacho,
@@ -81,6 +82,8 @@ function Product({ id, infodata }) {
     handleChangePrice,
     handleSubmitPrice,
     setCantiadingresada,
+    handleClickGetdespachoDetalles,
+    handleChangeNumeroGuia,
   } = useOpenModalDespacho();
 
   // here getting the producttoedit to show into ours inputs
@@ -230,9 +233,9 @@ function Product({ id, infodata }) {
         <TableCell id="product__addcantidad">
           {infodata.stockmin} / {infodata.amount} /{" "}
           <strong>{infodata.stockmax}</strong>{" "}
-          <Tooltip title="Agregar cantidad">
+          {/* <Tooltip title="Agregar cantidad">
             <QueueIcon />
-          </Tooltip>
+          </Tooltip> */}
         </TableCell>
         <TableCell style={{ width: "300px" }}>
           {calculostock <= calculostockmin ? (
@@ -243,7 +246,7 @@ function Product({ id, infodata }) {
                 backgroundColor: "#d9534f",
                 position: "relative",
                 textAlign: "center",
-                padding: "0.2rem",
+                padding: "0.5rem",
                 borderRadius: "30px",
                 color: "white",
               }}
@@ -255,8 +258,8 @@ function Product({ id, infodata }) {
               style={{
                 width: `${calculostock}%`,
                 backgroundColor: "#f0ad4e",
-                textAlign: "center",
-                padding: "0.2rem",
+                textAlign: "left",
+                padding: "0.5rem 0.5rem 0.5rem 0.2rem",
                 borderRadius: "30px",
                 color: "white",
               }}
@@ -269,7 +272,7 @@ function Product({ id, infodata }) {
                 width: `${calculostock > 100 ? 100 : calculostock}%`,
                 backgroundColor: "#5cb85c",
                 textAlign: "center",
-                padding: "0.2rem",
+                padding: "0.5rem",
                 borderRadius: "30px",
                 color: "white",
               }}
@@ -476,12 +479,15 @@ function Product({ id, infodata }) {
           customers={customers}
           valor={valor}
           enviado={enviado}
+          valoragregado={valoragregado}
           openModalDespacho={openModalDespacho}
           cantidadIngresada={cantidadIngresada}
           handleCloseModalDespacho={handleCloseModalDespacho}
           handleChangePrice={handleChangePrice}
           handleSubmitPrice={handleSubmitPrice}
+          handleChangeNumeroGuia={handleChangeNumeroGuia}
           setEnviado={setEnviado}
+          handleClickGetdespachoDetalles={handleClickGetdespachoDetalles}
           setCantiadingresada={setCantiadingresada}
         />
       </div>
