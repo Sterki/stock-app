@@ -1,4 +1,9 @@
-import { GET_PRODUCT_TO_EDIT, GET_LIST_PRODUCTS_TO_DELIVER } from "./../types";
+import {
+  GET_PRODUCT_TO_EDIT,
+  GET_LIST_PRODUCTS_TO_DELIVER,
+  GET_CANTIDAD_DESPACHADA,
+  GET_TOTAL_AMOUNT,
+} from "./../types";
 
 const inisialState = {
   producttoedit: {},
@@ -15,6 +20,8 @@ const inisialState = {
     { id: 10, categoria: "AGUA Y GAS" },
   ],
   productstodeliver: null,
+  cantidaddespachada: null,
+  totalamount: 0,
 };
 
 export default (state = inisialState, action) => {
@@ -28,6 +35,16 @@ export default (state = inisialState, action) => {
       return {
         ...state,
         productstodeliver: action.payload,
+      };
+    case GET_CANTIDAD_DESPACHADA:
+      return {
+        ...state,
+        cantidaddespachada: action.payload,
+      };
+    case GET_TOTAL_AMOUNT:
+      return {
+        ...state,
+        totalamount: action.payload,
       };
     default:
       return state;

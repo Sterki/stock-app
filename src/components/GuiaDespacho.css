@@ -136,3 +136,12 @@
   border: 1px solid transparent;
   background-color: var(--azul);
 }
+.guiadespacho__tdicondelete {
+  display: flex;
+  align-items: center;
+}
+.guiadespacho__tdicondelete > .MuiSvgIcon-root {
+  margin-right: 0.5rem;
+  cursor: pointer;
+  color: rgb(182, 4, 4);
+}

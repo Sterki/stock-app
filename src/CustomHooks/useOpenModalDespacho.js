@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import {
+  getCantidadDespachadaAction,
   getProductsToDeliver,
+  getProductTotalAmountAction,
   productToEditAction,
 } from "../actions/productActions";
 import db from "../firebase";
 import firebase from "firebase";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getCustomerInfoAction } from "../actions/customerActions";
+import {
+  getCustomerAddProductAction,
+  getCustomerInfoAction,
+} from "../actions/customerActions";
 
 export default function useOpenModalDespacho() {
   const [valor, setValor] = useState({}); // producto a despachar, corresponde a los valores completo del producto
@@ -18,14 +23,31 @@ export default function useOpenModalDespacho() {
   const [productid, setProductid] = useState(""); // id del producto a despachar
   const [enviado, setEnviado] = useState(false);
   const [valoragregado, setValoragreado] = useState();
+  const customerinfo = useSelector((state) => state.customers.customerinfoadd);
   const dispatch = useDispatch();
   const history = useHistory();
-
+  // state para controlar el envio del formulario
+  const [enviadoguia, setEnviadoGuia] = useState("");
+  const cantidadantigua = useSelector(
+    (state) => state.products.cantidaddespachada
+  );
+  console.log(cantidadantigua?.cantidadadespachar);
   const userAuth = useSelector((state) => state.users.user);
-
+  const totalamount = useSelector((state) => state.products.totalamount);
+  console.log(totalamount.amount);
   const [numeroguia, setNumeroguia] = useState(""); // esto debe ser automatico o ingresado por el cliente corresponde al codigo de la guia
 
+  useEffect(() => {
+    if (productid) {
+      db.collection("stock")
+        .doc(productid)
+        .onSnapshot((result) => {
+          dispatch(getProductTotalAmountAction(result.data()));
+        });
+    }
+  }, [productid]);
   const handleClickOpenDespacho = (valores, idproducto) => {
+    console.log(despachar);
     setValor(valores);
     setOpenModalDespacho(true);
     setProductid(idproducto);
@@ -55,11 +77,25 @@ export default function useOpenModalDespacho() {
       [e.target.name]: e.target.value,
     });
   };
-
   const handleChangePrice = (e) => {
     let customerinfo = JSON.parse(e.target.value);
     SetDespachar(customerinfo);
-    console.log(despachar);
+    dispatch(getCustomerAddProductAction(customerinfo));
+    console.log(despachar.customerinfo);
+    console.log(numeroguia.numeroguia);
+    if (customerinfo) {
+      db.collection("customers")
+        .doc(customerinfo?.id)
+        .collection("despachos")
+        .doc(numeroguia?.numeroguia)
+        .collection("productosadespachar")
+        .doc(productid)
+        .onSnapshot((result) => {
+          console.log(result.data());
+          console.log(productid);
+          dispatch(getCantidadDespachadaAction(result.data()));
+        });
+    }
   };
 
   const handleClickGetdespachoDetalles = (e) => {
@@ -77,7 +113,12 @@ export default function useOpenModalDespacho() {
         .collection("productosadespachar")
         .onSnapshot((snapshot) => {
           dispatch(
-            getProductsToDeliver(snapshot.docs.map((doc) => doc.data()))
+            getProductsToDeliver(
+              snapshot.docs.map((doc) => ({
+                productid: doc.id,
+                dataproduct: doc.data(),
+              }))
+            )
           );
           dispatch(getCustomerInfoAction(despachar, numeroguia.numeroguia));
         });
@@ -109,8 +150,23 @@ export default function useOpenModalDespacho() {
       console.log("No tiene suficientes productos para despachar esa cantidad");
       return;
     } else {
-      let totalstock = valor.amount - cantidadIngresada;
-
+      let totalstock = 0;
+      let newamount = 0;
+      if (cantidadantigua) {
+        console.log("cantidad antigua: ", cantidadantigua.cantidadadespachar);
+        console.log("cantidadIngresada", cantidadIngresada);
+        newamount = Number(
+          cantidadantigua?.cantidadadespachar + cantidadIngresada
+        );
+        let actualAmount = Number(valor.amount);
+        console.log("monto actual", actualAmount);
+        totalstock = Number(totalamount.amount - cantidadIngresada);
+        console.log("total stock en el if", totalstock);
+      } else {
+        newamount = cantidadIngresada;
+        totalstock = Number(totalamount.amount - cantidadIngresada);
+        console.log("total stock else", totalstock);
+      }
       db.collection("stock")
         .doc(productid)
         .update({
@@ -127,12 +183,16 @@ export default function useOpenModalDespacho() {
             .doc(productid)
             .set({
               producto: valor,
-              cantidadadespachar: cantidadIngresada,
+              cantidadadespachar: newamount,
               created: firebase.firestore.FieldValue.serverTimestamp(),
               creator: userAuth.email,
             })
             .then(function () {
               console.log("producto cargado correctamente a la guia");
+              setEnviadoGuia("Producto enviado a la guia Correctamente");
+              setTimeout(() => {
+                setEnviadoGuia("");
+              }, 3000);
             })
             .catch(function (error) {
               console.log(error.message);
@@ -150,7 +210,7 @@ export default function useOpenModalDespacho() {
     valoragregado,
     valor,
     enviado,
-
+    enviadoguia,
     setEnviado,
     openModalDespacho,
     cantidadIngresada,

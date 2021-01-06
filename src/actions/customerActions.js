@@ -1,4 +1,8 @@
-import { GET_CUSTOMER_TO_EDIT, GET_CUSTOMER_INFO } from "./../types";
+import {
+  GET_CUSTOMER_TO_EDIT,
+  GET_CUSTOMER_INFO,
+  GET_CUSTOMER_ADDPRODUCT,
+} from "./../types";
 
 export function getCustomerToEditAction(customer) {
   return (dispatch) => {
@@ -18,4 +22,15 @@ export function getCustomerInfoAction(customer, id) {
 const getCustomerInfo = (customer, id) => ({
   type: GET_CUSTOMER_INFO,
   payload: { customerinfo: customer, idnumeroguia: id },
+});
+
+export function getCustomerAddProductAction(customer) {
+  console.log(customer);
+  return (dispatch) => {
+    dispatch(getCustomerAddProduct(customer));
+  };
+}
+const getCustomerAddProduct = (customer) => ({
+  type: GET_CUSTOMER_ADDPRODUCT,
+  payload: customer,
 });

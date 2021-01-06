@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
+import { FormControl, InputLabel, Select, TextField } from "@material-ui/core";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import { makeStyles } from "@material-ui/core/styles";
-import { FormControl, InputLabel, Select, TextField } from "@material-ui/core";
-import MuiAlert from "@material-ui/lab/Alert";
-import db from "./../firebase";
-import { Link } from "react-router-dom";
-import Alert from "@material-ui/lab/Alert";
-import "./ModalDespacho.css";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -26,75 +23,59 @@ const useStyles = makeStyles((theme) => ({
     outline: "none",
   },
 }));
-// function Alert(props) {
-//   return <MuiAlert elevation={6} variant="filled" {...props} />;
-// }
 
-function ModalDespacho({
-  idproduct,
-  customers,
-  enviado,
-  enviadoguia,
-  valoragregado,
-  openModalDespacho,
-  cantidadIngresada,
-  handleCloseModalDespacho,
-  handleChangePrice,
-  handleChangeNumeroGuia,
-  valor,
-  handleSubmitPrice,
-  handleClickGetdespachoDetalles,
-  setCantiadingresada,
+function ModalAddProductGuia({
+  openAddproduct,
+  amount,
+  handleOpenModalGuia,
+  setAmount,
+  handleClickEliminar,
+  handleChange,
+  listadoProductos,
+  handleSubmit,
+  handleCloseModalGuia,
 }) {
   const classes = useStyles();
-
-  let total = valor.amount - cantidadIngresada;
-
+  const customerinfo = useSelector((state) => state.customers.customerinfo);
+  console.log(listadoProductos);
   return (
     <div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
-        open={openModalDespacho}
-        onClose={handleCloseModalDespacho}
+        open={openAddproduct}
+        onClose={handleCloseModalGuia}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
         }}
       >
-        <Fade in={openModalDespacho}>
+        <Fade in={openAddproduct}>
           <div className={classes.paper}>
             <div className="suppliers__titlemodal">
-              <h3>Generar Guia de despacho</h3>
+              <h3>Agregar producto a la Guia</h3>
             </div>
-            <div>
+            {/* <div>
               {enviadoguia ? (
                 <Alert severity="success">{enviadoguia}</Alert>
               ) : null}
-            </div>
+            </div> */}
             <div className="suppliers__error">
               {/* {error && <Alert severity="error">{error}</Alert>} */}
             </div>
-            <form onSubmit={handleSubmitPrice}>
-              <div className="product__codeproduct">
-                <div className="product__nameproducto">
-                  <span>
-                    Nombre Producto: <strong>{valor.name}</strong>
-                  </span>
-                </div>
-                <div className="produdct__restvalue">
-                  <span>
-                    Código del producto: <strong>{valor.productcode}</strong>
-                  </span>
-                  <span>
-                    Stock Actual: <strong>{valoragregado?.amount}</strong>
-                  </span>
-                  <span>
-                    Precion Unitario: <strong>$ {valor.price}</strong>
-                  </span>
-                </div>
+            <form onSubmit={handleSubmit}>
+              <div className="suppliers__inputs">
+                <TextField
+                  id="outlined-basic"
+                  label="Nombre Cliente"
+                  variant="outlined"
+                  type="text"
+                  disabled
+                  value={customerinfo?.customerinfo.customerinfo.namecustomer}
+                  name="customername"
+                />
               </div>
               <div className="suppliers__inputs">
                 <TextField
@@ -102,8 +83,9 @@ function ModalDespacho({
                   label="Nº Guia de despacho"
                   variant="outlined"
                   type="text"
+                  disabled
+                  value={customerinfo?.idnumeroguia}
                   name="numeroguia"
-                  onChange={handleChangeNumeroGuia}
                 />
               </div>
               <div className="suppliers__inputs">
@@ -116,29 +98,29 @@ function ModalDespacho({
                   }}
                 >
                   <InputLabel htmlFor="outlined-age-native-simple">
-                    Cliente
+                    Producto
                   </InputLabel>
                   <Select
                     className={classes.formControl}
                     native
                     // value={category}
-                    onChange={handleChangePrice}
-                    label="Categoria"
+                    onChange={handleChange}
+                    label="Producto"
                     inputProps={{
-                      name: "cliente",
+                      name: "producto",
                       id: "outlined-age-native-simple",
                     }}
                   >
-                    <option>-- Seleccione un cliente --</option>
-                    {customers.map(({ idcustomer, customerinfo }) => (
+                    <option>-- Selecctione un Producto --</option>
+                    {listadoProductos.map(({ idproducto, infodata }) => (
                       <option
-                        key={idcustomer}
+                        key={idproducto}
                         value={JSON.stringify({
-                          id: idcustomer,
-                          customerinfo: customerinfo,
+                          id: idproducto,
+                          infodata: infodata,
                         })}
                       >
-                        {customerinfo.namecustomer}
+                        {infodata.name}
                       </option>
                     ))}
                   </Select>
@@ -151,23 +133,12 @@ function ModalDespacho({
                   variant="outlined"
                   type="number"
                   name="cantidad"
-                  value={cantidadIngresada}
-                  onChange={(e) => setCantiadingresada(Number(e.target.value))}
+                  value={amount}
+                  onChange={(e) => setAmount(Number(e.target.value))}
                 />
               </div>
-              {enviado ? (
-                <div>
-                  <Link
-                    className="link__guiadespacho"
-                    to="/guiadespacho"
-                    onClick={handleClickGetdespachoDetalles}
-                  >
-                    Ir a guia de despacho
-                  </Link>
-                </div>
-              ) : null}
               <div className="suppliers__button">
-                <button type="submit">Enviar a guia de Despacho</button>
+                <button type="submit">Cargar producto a la guia</button>
               </div>
             </form>
           </div>
@@ -177,4 +148,4 @@ function ModalDespacho({
   );
 }
 
-export default ModalDespacho;
+export default ModalAddProductGuia;

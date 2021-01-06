@@ -5,18 +5,34 @@ import { useSelector } from "react-redux";
 import { TouchAppOutlined } from "@material-ui/icons";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
-
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import ModalAddProductGuia from "./ModalAddProductGuia";
+import useOpenModalGuia from "../CustomHooks/useOpenModalGuia";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import { Tooltip } from "@material-ui/core";
 function GuiaDespacho() {
   const listofproducts = useSelector(
     (state) => state.products.productstodeliver
   );
-
+  console.log(listofproducts);
   const customerinfo = useSelector((state) => state.customers.customerinfo);
   const [fecha, setFecha] = useState({
     day: "",
     month: "",
     year: "",
   });
+
+  const {
+    openAddproduct,
+    amount,
+    listadoProductos,
+    handleCloseModalGuia,
+    handleClickEliminar,
+    setAmount,
+    handleSubmit,
+    handleChange,
+    handleOpenModalGuia,
+  } = useOpenModalGuia();
   // console.log(listofproducts);
   const { day, month, year } = fecha;
   useEffect(() => {
@@ -33,8 +49,8 @@ function GuiaDespacho() {
   let iva = 0;
   let total = 0;
   for (let i = 0; i < listofproducts?.length; i++) {
-    let price = listofproducts[i].producto.price;
-    let totaporprice = price * listofproducts[i].cantidadadespachar;
+    let price = listofproducts[i].dataproduct.producto.price;
+    let totaporprice = price * listofproducts[i].dataproduct.cantidadadespachar;
     sumacion = sumacion + totaporprice;
     console.log(sumacion);
     iva = sumacion * 0.19;
@@ -45,9 +61,7 @@ function GuiaDespacho() {
   function printDocument() {
     const input = document.getElementById("divToPrint");
     html2canvas(input, {
-      allowTaint: true,
-      scrollX: 0,
-      scrollY: -window.scrollY,
+      scale: 0.8,
     }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
@@ -156,16 +170,31 @@ function GuiaDespacho() {
               <th>Precio</th>
               <th>Total</th>
             </tr>
-            {listofproducts?.map((product) => (
+            {listofproducts?.map(({ productid, dataproduct }) => (
               <tr className="guiadespacho__tr">
-                <td>{product.producto.productcode}</td>
-                <td>{product.producto.name}</td>
-                <td>{product.cantidadadespachar}</td>
-                <td>$ {product.producto.price}</td>
-                <td>$ {product.producto.price * product.cantidadadespachar}</td>
+                <td className="guiadespacho__tdicondelete">
+                  <Tooltip title="Eliminar de la lista">
+                    <HighlightOffIcon
+                      onClick={(e) =>
+                        handleClickEliminar(productid, dataproduct)
+                      }
+                    />
+                  </Tooltip>
+                  <strong>{dataproduct.producto.productcode}</strong>
+                </td>
+                <td>{dataproduct.producto.name}</td>
+                <td>{dataproduct.cantidadadespachar}</td>
+                <td>$ {dataproduct.producto.price}</td>
+                <td>
+                  ${" "}
+                  {dataproduct.producto.price * dataproduct.cantidadadespachar}
+                </td>
               </tr>
             ))}
           </table>
+          <div className="guiadespacho__botonmasproductos">
+            <AddCircleIcon onClick={(e) => handleOpenModalGuia(customerinfo)} />
+          </div>
         </div>
         <div className="guiadespacho__totaladespachar">
           <div className="guiadespacho__totalcontainer">
@@ -228,6 +257,17 @@ function GuiaDespacho() {
       <div className="guiadespacho__button">
         <button onClick={printDocument}>Descargar Archivo</button>
       </div>
+      <ModalAddProductGuia
+        openAddproduct={openAddproduct}
+        amount={amount}
+        setAmount={setAmount}
+        listadoProductos={listadoProductos}
+        handleOpenModalGuia={handleOpenModalGuia}
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+        handleClickEliminar={handleClickEliminar}
+        handleCloseModalGuia={handleCloseModalGuia}
+      />
     </div>
   );
 }

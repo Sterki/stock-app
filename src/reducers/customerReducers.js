@@ -1,8 +1,13 @@
-import { GET_CUSTOMER_TO_EDIT, GET_CUSTOMER_INFO } from "./../types";
+import {
+  GET_CUSTOMER_TO_EDIT,
+  GET_CUSTOMER_INFO,
+  GET_CUSTOMER_ADDPRODUCT,
+} from "./../types";
 
 const inisialState = {
   customer: {},
   customerinfo: null,
+  customerinfoadd: null,
 };
 
 export default (state = inisialState, action) => {
@@ -16,6 +21,11 @@ export default (state = inisialState, action) => {
       return {
         ...state,
         customerinfo: action.payload,
+      };
+    case GET_CUSTOMER_ADDPRODUCT:
+      return {
+        ...state,
+        customerinfoadd: action.payload,
       };
     default:
       return state;

@@ -72,6 +72,7 @@ function Product({ id, infodata }) {
   const {
     customers,
     valor,
+    enviadoguia,
     openModalDespacho,
     enviado,
     valoragregado,
@@ -478,6 +479,7 @@ function Product({ id, infodata }) {
           idproduct={id}
           customers={customers}
           valor={valor}
+          enviadoguia={enviadoguia}
           enviado={enviado}
           valoragregado={valoragregado}
           openModalDespacho={openModalDespacho}
