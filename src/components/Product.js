@@ -75,6 +75,8 @@ function Product({ id, infodata }) {
     enviadoguia,
     openModalDespacho,
     enviado,
+    numeroguia,
+    alerta,
     valoragregado,
     cantidadIngresada,
     setEnviado,
@@ -479,6 +481,8 @@ function Product({ id, infodata }) {
           idproduct={id}
           customers={customers}
           valor={valor}
+          numeroguia={numeroguia}
+          alerta={alerta}
           enviadoguia={enviadoguia}
           enviado={enviado}
           valoragregado={valoragregado}

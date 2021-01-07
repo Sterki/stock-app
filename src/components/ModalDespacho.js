@@ -34,7 +34,9 @@ function ModalDespacho({
   idproduct,
   customers,
   enviado,
+  numeroguia,
   enviadoguia,
+  alerta,
   valoragregado,
   openModalDespacho,
   cantidadIngresada,
@@ -73,6 +75,7 @@ function ModalDespacho({
               {enviadoguia ? (
                 <Alert severity="success">{enviadoguia}</Alert>
               ) : null}
+              {alerta ? <Alert severity="error">{alerta}</Alert> : null}
             </div>
             <div className="suppliers__error">
               {/* {error && <Alert severity="error">{error}</Alert>} */}
@@ -103,6 +106,7 @@ function ModalDespacho({
                   variant="outlined"
                   type="text"
                   name="numeroguia"
+                  // value={numeroguia.numeroguia}
                   onChange={handleChangeNumeroGuia}
                 />
               </div>
@@ -115,9 +119,7 @@ function ModalDespacho({
                     marginRight: "1rem",
                   }}
                 >
-                  <InputLabel htmlFor="outlined-age-native-simple">
-                    Cliente
-                  </InputLabel>
+                  <InputLabel htmlFor="outlined-age-native-simple"></InputLabel>
                   <Select
                     className={classes.formControl}
                     native
@@ -129,7 +131,7 @@ function ModalDespacho({
                       id: "outlined-age-native-simple",
                     }}
                   >
-                    <option>-- Seleccione un cliente --</option>
+                    <option value="">-- Seleccione un cliente --</option>
                     {customers.map(({ idcustomer, customerinfo }) => (
                       <option
                         key={idcustomer}

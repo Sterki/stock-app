@@ -34,18 +34,11 @@ export default function useOpenModalDespacho() {
   console.log(cantidadantigua?.cantidadadespachar);
   const userAuth = useSelector((state) => state.users.user);
   const totalamount = useSelector((state) => state.products.totalamount);
+  const [alerta, setAlerta] = useState("");
   console.log(totalamount.amount);
   const [numeroguia, setNumeroguia] = useState(""); // esto debe ser automatico o ingresado por el cliente corresponde al codigo de la guia
+  const [selectcliente, setSelectCliente] = useState("");
 
-  useEffect(() => {
-    if (productid) {
-      db.collection("stock")
-        .doc(productid)
-        .onSnapshot((result) => {
-          dispatch(getProductTotalAmountAction(result.data()));
-        });
-    }
-  }, [productid]);
   const handleClickOpenDespacho = (valores, idproducto) => {
     console.log(despachar);
     setValor(valores);
@@ -54,6 +47,13 @@ export default function useOpenModalDespacho() {
     db.collection("stock")
       .doc(idproducto)
       .onSnapshot((result) => setValoragreado(result.data())); // guardar informacion del producto completa para poder llenar la guia de despacho y para el automatico del modal
+    if (idproducto) {
+      db.collection("stock")
+        .doc(idproducto)
+        .onSnapshot((result) => {
+          dispatch(getProductTotalAmountAction(result.data()));
+        });
+    }
   };
   const handleCloseModalDespacho = () => {
     setOpenModalDespacho(false);
@@ -78,23 +78,30 @@ export default function useOpenModalDespacho() {
     });
   };
   const handleChangePrice = (e) => {
-    let customerinfo = JSON.parse(e.target.value);
-    SetDespachar(customerinfo);
-    dispatch(getCustomerAddProductAction(customerinfo));
-    console.log(despachar.customerinfo);
-    console.log(numeroguia.numeroguia);
-    if (customerinfo) {
-      db.collection("customers")
-        .doc(customerinfo?.id)
-        .collection("despachos")
-        .doc(numeroguia?.numeroguia)
-        .collection("productosadespachar")
-        .doc(productid)
-        .onSnapshot((result) => {
-          console.log(result.data());
-          console.log(productid);
-          dispatch(getCantidadDespachadaAction(result.data()));
-        });
+    if (e.target.value === "") {
+      console.log("no ha seleccionado nada!");
+      setSelectCliente(e.target.value);
+      return;
+    } else {
+      let customerinfo = JSON.parse(e.target.value);
+      setSelectCliente(customerinfo);
+      SetDespachar(customerinfo);
+      dispatch(getCustomerAddProductAction(customerinfo));
+      console.log(despachar.customerinfo);
+      console.log(numeroguia.numeroguia);
+      if (customerinfo) {
+        db.collection("customers")
+          .doc(customerinfo?.id)
+          .collection("despachos")
+          .doc(numeroguia?.numeroguia)
+          .collection("productosadespachar")
+          .doc(productid)
+          .onSnapshot((result) => {
+            console.log(result.data());
+            console.log(productid);
+            dispatch(getCantidadDespachadaAction(result.data()));
+          });
+      }
     }
   };
 
@@ -129,22 +136,45 @@ export default function useOpenModalDespacho() {
     e.preventDefault();
 
     // console.log(valor);
-    if (numeroguia) {
-      console.log(numeroguia.numeroguia);
+    if (!numeroguia) {
+      setAlerta("No ha ingresado el numero de guia!");
+      setTimeout(() => {
+        setAlerta("");
+      }, 3000);
+      return;
     }
     if (cantidadIngresada > valor.amount) {
       console.log(true);
-      console.log("la cantidad ingresada es mayor al stock actual");
+      setAlerta("La cantidad ingresada es mayor al stock actual");
+      setTimeout(() => {
+        setAlerta("");
+      }, 3000);
+      return;
+    }
+    if (selectcliente === "") {
+      setAlerta("No ha seleccionado un cliente!");
+      setTimeout(() => {
+        setAlerta("");
+      }, 3000);
       return;
     }
     if (cantidadIngresada >= valor.amount) {
-      console.log("Ojo Estas agregando la cantidad exacta de tu stock actual");
+      setAlerta("Ojo Estas agregando la cantidad exacta de tu stock actual");
+      setTimeout(() => {
+        setAlerta("");
+      }, 3000);
       return;
     }
     if (cantidadIngresada === "") {
-      console.log("debe ingresar una cantidad");
+      setAlerta("Debe ingresar una cantidad");
+      setTimeout(() => {
+        setAlerta("");
+      }, 3000);
     } else if (cantidadIngresada <= 0) {
-      console.log("no a ingresado una cantidad valida!");
+      setAlerta("No a ingresado una cantidad valida!");
+      setTimeout(() => {
+        setAlerta("");
+      }, 3000);
       return;
     } else if (cantidadIngresada > valor.amount) {
       console.log("No tiene suficientes productos para despachar esa cantidad");
@@ -210,6 +240,8 @@ export default function useOpenModalDespacho() {
     valoragregado,
     valor,
     enviado,
+    numeroguia,
+    alerta,
     enviadoguia,
     setEnviado,
     openModalDespacho,

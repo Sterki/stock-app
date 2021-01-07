@@ -85,7 +85,6 @@ export default function useOpenModalGuia() {
     let newamount = 0;
     if (cantidadantigua) {
       newamount = cantidadantigua?.cantidadadespachar + amount;
-     
     } else {
       newamount = amount;
     }
