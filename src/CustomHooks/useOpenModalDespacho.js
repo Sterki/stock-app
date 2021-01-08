@@ -31,16 +31,15 @@ export default function useOpenModalDespacho() {
   const cantidadantigua = useSelector(
     (state) => state.products.cantidaddespachada
   );
-  console.log(cantidadantigua?.cantidadadespachar);
+
   const userAuth = useSelector((state) => state.users.user);
   const totalamount = useSelector((state) => state.products.totalamount);
   const [alerta, setAlerta] = useState("");
-  console.log(totalamount.amount);
+
   const [numeroguia, setNumeroguia] = useState(""); // esto debe ser automatico o ingresado por el cliente corresponde al codigo de la guia
   const [selectcliente, setSelectCliente] = useState("");
 
   const handleClickOpenDespacho = (valores, idproducto) => {
-    console.log(despachar);
     setValor(valores);
     setOpenModalDespacho(true);
     setProductid(idproducto);
@@ -79,7 +78,6 @@ export default function useOpenModalDespacho() {
   };
   const handleChangePrice = (e) => {
     if (e.target.value === "") {
-      console.log("no ha seleccionado nada!");
       setSelectCliente(e.target.value);
       return;
     } else {
@@ -87,8 +85,6 @@ export default function useOpenModalDespacho() {
       setSelectCliente(customerinfo);
       SetDespachar(customerinfo);
       dispatch(getCustomerAddProductAction(customerinfo));
-      console.log(despachar.customerinfo);
-      console.log(numeroguia.numeroguia);
       if (customerinfo) {
         db.collection("customers")
           .doc(customerinfo?.id)
@@ -97,21 +93,16 @@ export default function useOpenModalDespacho() {
           .collection("productosadespachar")
           .doc(productid)
           .onSnapshot((result) => {
-            console.log(result.data());
-            console.log(productid);
             dispatch(getCantidadDespachadaAction(result.data()));
           });
       }
     }
   };
-
   const handleClickGetdespachoDetalles = (e) => {
     e.preventDefault();
-    console.log("desde getDespacho details");
-    console.log(numeroguia.numeroguia);
+
     history.push("/guiadespacho");
-    console.log(despachar.id);
-    console.log(despachar);
+
     if (numeroguia.numeroguia !== "" && despachar.id !== "") {
       db.collection("customers")
         .doc(despachar.id)
@@ -135,7 +126,6 @@ export default function useOpenModalDespacho() {
   const handleSubmitPrice = (e) => {
     e.preventDefault();
 
-    // console.log(valor);
     if (!numeroguia) {
       setAlerta("No ha ingresado el numero de guia!");
       setTimeout(() => {
@@ -144,7 +134,6 @@ export default function useOpenModalDespacho() {
       return;
     }
     if (cantidadIngresada > valor.amount) {
-      console.log(true);
       setAlerta("La cantidad ingresada es mayor al stock actual");
       setTimeout(() => {
         setAlerta("");
@@ -177,25 +166,24 @@ export default function useOpenModalDespacho() {
       }, 3000);
       return;
     } else if (cantidadIngresada > valor.amount) {
-      console.log("No tiene suficientes productos para despachar esa cantidad");
+      setAlerta("No tiene suficientes productos para despachar esa cantidad");
+      setTimeout(() => {
+        setAlerta("");
+      }, 3000);
       return;
     } else {
       let totalstock = 0;
       let newamount = 0;
       if (cantidadantigua) {
-        console.log("cantidad antigua: ", cantidadantigua.cantidadadespachar);
-        console.log("cantidadIngresada", cantidadIngresada);
         newamount = Number(
           cantidadantigua?.cantidadadespachar + cantidadIngresada
         );
         let actualAmount = Number(valor.amount);
-        console.log("monto actual", actualAmount);
+
         totalstock = Number(totalamount.amount - cantidadIngresada);
-        console.log("total stock en el if", totalstock);
       } else {
         newamount = cantidadIngresada;
         totalstock = Number(totalamount.amount - cantidadIngresada);
-        console.log("total stock else", totalstock);
       }
       db.collection("stock")
         .doc(productid)
@@ -203,8 +191,6 @@ export default function useOpenModalDespacho() {
           amount: totalstock,
         })
         .then(function () {
-          console.log("producto agregado a la guia de despacho correctamente");
-          console.log("despachar a :", despachar.id);
           db.collection("customers")
             .doc(despachar.id)
             .collection("despachos")
@@ -218,7 +204,6 @@ export default function useOpenModalDespacho() {
               creator: userAuth.email,
             })
             .then(function () {
-              console.log("producto cargado correctamente a la guia");
               setEnviadoGuia("Producto enviado a la guia Correctamente");
               setTimeout(() => {
                 setEnviadoGuia("");

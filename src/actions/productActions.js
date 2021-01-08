@@ -3,6 +3,7 @@ import {
   GET_LIST_PRODUCTS_TO_DELIVER,
   GET_CANTIDAD_DESPACHADA,
   GET_TOTAL_AMOUNT,
+  SET_NULL_CANTIDAD_DESP,
 } from "./../types";
 
 export function productToEditAction(product) {
@@ -26,7 +27,6 @@ const getProductsTo = (products) => ({
 });
 
 export function getCantidadDespachadaAction(cantidad) {
-  console.log(cantidad);
   return (dispatch) => {
     dispatch(getCantidadDespachada(cantidad));
   };
@@ -37,7 +37,6 @@ const getCantidadDespachada = (cantidad) => ({
 });
 
 export function getProductTotalAmountAction(cantidadtotal) {
-  console.log(cantidadtotal);
   return (dispatch) => {
     dispatch(getProductTotalAmount(cantidadtotal));
   };
@@ -45,4 +44,13 @@ export function getProductTotalAmountAction(cantidadtotal) {
 const getProductTotalAmount = (cantidadtotal) => ({
   type: GET_TOTAL_AMOUNT,
   payload: cantidadtotal,
+});
+
+export function setNullCantidadDespachadaAction() {
+  return (dispatch) => {
+    dispatch(setNullCantidadDespachada());
+  };
+}
+const setNullCantidadDespachada = () => ({
+  type: SET_NULL_CANTIDAD_DESP,
 });

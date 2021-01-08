@@ -14,7 +14,7 @@ function GuiaDespacho() {
   const listofproducts = useSelector(
     (state) => state.products.productstodeliver
   );
-  console.log(listofproducts);
+
   const customerinfo = useSelector((state) => state.customers.customerinfo);
   const [fecha, setFecha] = useState({
     day: "",
@@ -33,7 +33,7 @@ function GuiaDespacho() {
     handleChange,
     handleOpenModalGuia,
   } = useOpenModalGuia();
-  // console.log(listofproducts);
+
   const { day, month, year } = fecha;
   useEffect(() => {
     let d = new Date().getDay();
@@ -52,9 +52,9 @@ function GuiaDespacho() {
     let price = listofproducts[i].dataproduct.producto.price;
     let totaporprice = price * listofproducts[i].dataproduct.cantidadadespachar;
     sumacion = sumacion + totaporprice;
-    console.log(sumacion);
+
     iva = sumacion * 0.19;
-    console.log(iva);
+
     total = sumacion + iva;
   }
 
@@ -173,7 +173,7 @@ function GuiaDespacho() {
             {listofproducts?.map(({ productid, dataproduct }) => (
               <tr className="guiadespacho__tr">
                 <td className="guiadespacho__tdicondelete">
-                  <Tooltip title="Eliminar de la lista">
+                  <Tooltip title="Eliminar producto de la guia">
                     <HighlightOffIcon
                       onClick={(e) =>
                         handleClickEliminar(productid, dataproduct)
@@ -193,7 +193,11 @@ function GuiaDespacho() {
             ))}
           </table>
           <div className="guiadespacho__botonmasproductos">
-            <AddCircleIcon onClick={(e) => handleOpenModalGuia(customerinfo)} />
+            <Tooltip title="Agregar productos a la guia">
+              <AddCircleIcon
+                onClick={(e) => handleOpenModalGuia(customerinfo)}
+              />
+            </Tooltip>
           </div>
         </div>
         <div className="guiadespacho__totaladespachar">

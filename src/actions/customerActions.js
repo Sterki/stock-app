@@ -14,7 +14,6 @@ const getCustomerToEdit = (customer) => ({
   payload: customer,
 });
 export function getCustomerInfoAction(customer, id) {
-  console.log(id);
   return (dispatch) => {
     dispatch(getCustomerInfo(customer, id));
   };
@@ -25,7 +24,6 @@ const getCustomerInfo = (customer, id) => ({
 });
 
 export function getCustomerAddProductAction(customer) {
-  console.log(customer);
   return (dispatch) => {
     dispatch(getCustomerAddProduct(customer));
   };

@@ -3,6 +3,7 @@ import {
   GET_LIST_PRODUCTS_TO_DELIVER,
   GET_CANTIDAD_DESPACHADA,
   GET_TOTAL_AMOUNT,
+  SET_NULL_CANTIDAD_DESP,
 } from "./../types";
 
 const inisialState = {
@@ -45,6 +46,11 @@ export default (state = inisialState, action) => {
       return {
         ...state,
         totalamount: action.payload,
+      };
+    case SET_NULL_CANTIDAD_DESP:
+      return {
+        ...state,
+        cantidaddespachada: null,
       };
     default:
       return state;

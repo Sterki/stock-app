@@ -37,7 +37,7 @@ function ModalAddProductGuia({
 }) {
   const classes = useStyles();
   const customerinfo = useSelector((state) => state.customers.customerinfo);
-  console.log(listadoProductos);
+
   return (
     <div>
       <Modal
@@ -111,7 +111,7 @@ function ModalAddProductGuia({
                       id: "outlined-age-native-simple",
                     }}
                   >
-                    <option>-- Selecctione un Producto --</option>
+                    <option value="">-- Selecctione un Producto --</option>
                     {listadoProductos.map(({ idproducto, infodata }) => (
                       <option
                         key={idproducto}

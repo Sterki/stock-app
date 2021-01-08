@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import db from "../firebase";
 import firebase from "firebase";
-import { getCantidadDespachadaAction } from "../actions/productActions";
+import {
+  getCantidadDespachadaAction,
+  setNullCantidadDespachadaAction,
+} from "../actions/productActions";
 
 export default function useOpenModalGuia() {
   const [openAddproduct, setOpenAddproduct] = useState(false);
@@ -12,16 +15,15 @@ export default function useOpenModalGuia() {
   const [producto, setProducto] = useState({});
   const customerinfo = useSelector((state) => state.customers.customerinfo);
   const [cantidaddespachada, setCantidadDespachadaAnterior] = useState({});
-  console.log(cantidaddespachada);
 
   const userAuth = useSelector((state) => state.users.user);
   const cantidadantigua = useSelector(
     (state) => state.products.cantidaddespachada
   );
-  console.log(cantidadantigua?.cantidadadespachar);
 
   const handleOpenModalGuia = () => {
     setOpenAddproduct(true);
+    dispatch(setNullCantidadDespachadaAction());
   };
   const handleCloseModalGuia = () => {
     setOpenAddproduct(false);
@@ -40,8 +42,23 @@ export default function useOpenModalGuia() {
 
   const handleChange = (e) => {
     let valores = JSON.parse(e.target.value);
-    console.log(valores);
+
     setProducto(valores);
+    if (valores) {
+      console.log(valores);
+      console.log(customerinfo);
+      db.collection("customers")
+        .doc(customerinfo.customerinfo.id)
+        .collection("despachos")
+        .doc(customerinfo.idnumeroguia)
+        .collection("productosadespachar")
+        .doc(valores.id)
+        .onSnapshot((result) => {
+          console.log("hola: ", result.data());
+          console.log(valores.id);
+          dispatch(getCantidadDespachadaAction(result.data()));
+        });
+    }
   };
   const handleClickEliminar = (productid, productinfo) => {
     db.collection("customers")
@@ -50,19 +67,34 @@ export default function useOpenModalGuia() {
       .doc(customerinfo.idnumeroguia)
       .collection("productosadespachar")
       .doc(productid)
-      .delete()
+      .onSnapshot((result) =>
+        dispatch(getCantidadDespachadaAction(result.data()))
+      );
+    db.collection("stock")
+      .doc(productid)
+      .update({
+        amount: cantidadantigua.producto.amount,
+      })
       .then(function () {
-        console.log("producto Eliminado correctamente");
-        // reparar esto
-        db.collection("stock")
-          .doc(producto.id)
-          .update({
-            amount: productinfo.producto.amount,
-          })
-          .catch(function (error) {
-            console.log("error al actualizar!", error.message);
-          });
+        console.log("actualizado correctamente!");
+      })
+      .catch(function (error) {
+        console.log(error.message);
       });
+
+    // setTimeout(() => {
+    //   db.collection("customers")
+    //     .doc(customerinfo.customerinfo.id)
+    //     .collection("despachos")
+    //     .doc(customerinfo.idnumeroguia)
+    //     .collection("productosadespachar")
+    //     .doc(productid)
+    //     .delete()
+    //     .then(function () {
+    //       console.log("producto Eliminado correctamente");
+    //       // reparar esto
+    //     });
+    // }, 2000);
   };
 
   const handleSubmit = (e) => {
