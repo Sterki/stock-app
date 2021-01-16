@@ -6,6 +6,7 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import LocalMallIcon from "@material-ui/icons/LocalMall";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
+import ListAltIcon from "@material-ui/icons/ListAlt";
 
 function Navbar() {
   return (
@@ -30,6 +31,10 @@ function Navbar() {
       <NavLink to="/panel" activeClassName="active" className="navbar__links">
         <LocalMallIcon />
         Stock
+      </NavLink>
+      <NavLink to="/guias" activeClassName="active" className="navbar__links">
+        <ListAltIcon />
+        Guias de Despacho
       </NavLink>
       <NavLink
         to="/myprofile"

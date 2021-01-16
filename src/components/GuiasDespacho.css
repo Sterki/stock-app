@@ -1,0 +1,23 @@
+.guiasdespacho__container {
+  max-width: 1200px;
+  width: 95%;
+  margin: 0 auto;
+}
+.guiasdespacho__combobox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 800px;
+  margin: 0 auto;
+  border: 1px solid lightgray;
+  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: 5px;
+}
+.guiasdespacho__title {
+  text-align: center;
+  padding: 1rem;
+}
+.guiasdespacho__Select {
+  padding: 1rem;
+}

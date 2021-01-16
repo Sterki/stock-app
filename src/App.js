@@ -16,6 +16,7 @@ import Customers from "./components/Customers";
 import Stock from "./components/Stock";
 import ModalDespacho from "./components/ModalDespacho";
 import GuiaDespacho from "./components/GuiaDespacho";
+import GuiasDespacho from "./components/GuiasDespacho";
 
 function wrappApp() {
   return (
@@ -49,6 +50,10 @@ function App() {
       <Provider store={store}>
         <Router>
           <Switch>
+            <Route path="/guias">
+              <Header />
+              <GuiasDespacho />
+            </Route>
             <Route path="/guiadespacho">
               <Header />
               <GuiaDespacho />
