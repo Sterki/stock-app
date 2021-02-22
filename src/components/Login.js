@@ -89,7 +89,7 @@ function Login() {
           </div>
           <div className="login__inputs">
             <button>Ingresar</button>
-            <Link to="/register">Crear una cuenta</Link>
+            {/* <Link to="/register">Crear una cuenta</Link> */}
           </div>
         </div>
       </form>

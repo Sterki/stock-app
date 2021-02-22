@@ -32,11 +32,11 @@ function Navbar() {
         <LocalMallIcon />
         Stock
       </NavLink>
-      <NavLink to="/guias" activeClassName="active" className="navbar__links">
+      {/* <NavLink to="/guias" activeClassName="active" className="navbar__links">
         <ListAltIcon />
         Guias de Despacho
-      </NavLink>
-      <NavLink
+      </NavLink> */}
+      {/* <NavLink
         to="/myprofile"
         activeClassName="active"
         className="navbar__links"
@@ -51,7 +51,7 @@ function Navbar() {
       >
         <SupervisorAccountIcon />
         Administrar Usuarios
-      </NavLink>
+      </NavLink> */}
     </nav>
   );
 }
